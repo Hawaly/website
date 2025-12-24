@@ -1,0 +1,38 @@
+{
+  "name": "compta",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.84.0",
+    "@types/pdfkit": "^0.17.3",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "jose": "^6.1.2",
+    "jspdf-invoice-template-nodejs": "^1.4.40",
+    "lucide-react": "^0.554.0",
+    "next": "14.2.33",
+    "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.17.2",
+    "react": "^18",
+    "react-dom": "^18",
+    "swissqrbill": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.33",
+    "postcss": "^8",
+    "supabase": "^2.65.3",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

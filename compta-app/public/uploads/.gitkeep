@@ -1,0 +1,10 @@
+# Ce dossier contient les fichiers uploadés localement
+# (Solution temporaire en attendant Supabase Storage)
+
+Structure :
+- contracts/YYYY/*.pdf
+- invoices/YYYY/*.pdf  
+- receipts/YYYY/*.*
+
+Note : Ne pas commiter les fichiers générés, seulement ce .gitkeep
+
