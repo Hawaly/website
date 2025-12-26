@@ -4,6 +4,8 @@ import { generateSwissQrBill } from '@/lib/qrBillGenerator';
 import { saveQrBill } from '@/lib/storageHelpers';
 import { Client, Invoice, CompanySettings } from '@/types/database';
 
+export const runtime = 'nodejs';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

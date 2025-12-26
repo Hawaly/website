@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 "use client";
 
 import { useState, useEffect } from "react";
@@ -18,9 +18,9 @@ import { EditorialCalendarNew } from "./EditorialCalendarNew";
 import { PersonaManager } from "./PersonaManager";
 import { PilierManager } from "./PilierManager";
 import { KPIManager } from "./KPIManager";
-import { Button } from "@/components/ui/Button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { Button } from "../ui/Button";
+import { Card, CardHeader, CardTitle, CardContent } from "../ui/Card";
+import { Badge } from "../ui/Badge";
 import { getEditorialCalendar } from "@/lib/editorialCalendarApi";
 import type { EditorialCalendar as EditorialCalendarType } from "@/types/database";
 
@@ -48,7 +48,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
     planning: false,
   });
   
-  // États pour chaque section
+  // Ã‰tats pour chaque section
   const [formData, setFormData] = useState<Partial<SocialMediaStrategyInsert>>({
     client_id: clientId,
     status: 'brouillon',
@@ -117,7 +117,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
         notes_internes: strategy.notes_internes || '',
       });
       
-      // Charger le calendrier éditorial si la stratégie existe
+      // Charger le calendrier Ã©ditorial si la stratÃ©gie existe
       if (strategy.id) {
         loadCalendar(strategy.id);
       }
@@ -143,7 +143,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
   // Gestion des personas
   const addPersona = () => {
     const newPersona: Persona = {
-      id: 0, // Temporaire, sera défini lors de la sauvegarde
+      id: 0, // Temporaire, sera dÃ©fini lors de la sauvegarde
       strategy_id: strategy?.id || 0,
       nom: '',
       age_range: null,
@@ -234,7 +234,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
       await onSave(dataToSave);
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
-      alert('Erreur lors de la sauvegarde de la stratégie');
+      alert('Erreur lors de la sauvegarde de la stratÃ©gie');
     } finally {
       setIsSaving(false);
     }
@@ -260,7 +260,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
       {/* Statut */}
       <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
         <label className="block text-sm font-bold text-gray-900 mb-2">
-          Statut de la stratégie
+          Statut de la stratÃ©gie
         </label>
         <select
           value={formData.status}
@@ -280,9 +280,9 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
           <div className="p-4 sm:p-6 space-y-4">
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
-                Contexte général
+                Contexte gÃ©nÃ©ral
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Description de l'entreprise, positionnement, ressources, marché)
+                  (Description de l'entreprise, positionnement, ressources, marchÃ©)
                 </span>
               </label>
               <textarea
@@ -290,7 +290,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, contexte_general: e.target.value })}
                 rows={4}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Décrivez l'entreprise, son positionnement, ses ressources..."
+                placeholder="DÃ©crivez l'entreprise, son positionnement, ses ressources..."
               />
             </div>
 
@@ -298,7 +298,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Objectifs business
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Moyen/long terme : CA, notoriété, acquisition, fidélisation...)
+                  (Moyen/long terme : CA, notoriÃ©tÃ©, acquisition, fidÃ©lisation...)
                 </span>
               </label>
               <textarea
@@ -312,9 +312,9 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
 
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2 sm:mb-3">
-                Objectifs réseaux sociaux (SMART)
+                Objectifs rÃ©seaux sociaux (SMART)
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Spécifiques, mesurables, atteignables, réalistes, temporels)
+                  (SpÃ©cifiques, mesurables, atteignables, rÃ©alistes, temporels)
                 </span>
               </label>
               <textarea
@@ -322,7 +322,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, objectifs_reseaux: e.target.value })}
                 rows={4}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Définissez les objectifs SMART pour les réseaux sociaux..."
+                placeholder="DÃ©finissez les objectifs SMART pour les rÃ©seaux sociaux..."
               />
             </div>
           </div>
@@ -338,7 +338,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Cibles principales
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Âge, sexe, localisation, centres d'intérêt, comportements)
+                  (Ã‚ge, sexe, localisation, centres d'intÃ©rÃªt, comportements)
                 </span>
               </label>
               <textarea
@@ -346,14 +346,14 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, cibles: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Décrivez les cibles principales..."
+                placeholder="DÃ©crivez les cibles principales..."
               />
             </div>
 
             <div>
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-3">
                 <label className="block text-sm font-bold text-gray-900">
-                  Personas marketing (1 à 3 profils types)
+                  Personas marketing (1 Ã  3 profils types)
                 </label>
                 <button
                   type="button"
@@ -390,7 +390,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                     type="text"
                     value={persona.age || ''}
                     onChange={(e) => updatePersona(index, 'age', e.target.value)}
-                    placeholder="Âge / Tranche d'âge"
+                    placeholder="Ã‚ge / Tranche d'Ã¢ge"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
                   />
 
@@ -405,7 +405,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                   <textarea
                     value={persona.problemes}
                     onChange={(e) => updatePersona(index, 'problemes', e.target.value)}
-                    placeholder="Problèmes et points de douleur..."
+                    placeholder="ProblÃ¨mes et points de douleur..."
                     rows={2}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
                   />
@@ -413,7 +413,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                   <textarea
                     value={persona.attentes}
                     onChange={(e) => updatePersona(index, 'attentes', e.target.value)}
-                    placeholder="Attentes vis-à-vis de la marque..."
+                    placeholder="Attentes vis-Ã -vis de la marque..."
                     rows={2}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
                   />
@@ -446,16 +446,16 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
         )}
       </div>
 
-      {/* 3. Positionnement & identité */}
+      {/* 3. Positionnement & identitÃ© */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <SectionHeader title="3. Positionnement & Identité de Communication" section="positionnement" />
+        <SectionHeader title="3. Positionnement & IdentitÃ© de Communication" section="positionnement" />
         {expandedSections.positionnement && (
           <div className="p-4 sm:p-6 space-y-4">
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Ton / Voix de la marque
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Ex : professionnel, bienveillant, fun, sérieux, inspirant...)
+                  (Ex : professionnel, bienveillant, fun, sÃ©rieux, inspirant...)
                 </span>
               </label>
               <textarea
@@ -471,7 +471,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Guidelines visuelles
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Couleurs, typographies, style visuel, type de visuels, cohérence graphique)
+                  (Couleurs, typographies, style visuel, type de visuels, cohÃ©rence graphique)
                 </span>
               </label>
               <textarea
@@ -479,15 +479,15 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, guidelines_visuelles: e.target.value })}
                 rows={4}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Décrivez les guidelines visuelles..."
+                placeholder="DÃ©crivez les guidelines visuelles..."
               />
             </div>
 
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
-                Valeurs & messages clés
+                Valeurs & messages clÃ©s
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Ce que la marque défend, promet, son histoire, ce qui la différencie)
+                  (Ce que la marque dÃ©fend, promet, son histoire, ce qui la diffÃ©rencie)
                 </span>
               </label>
               <textarea
@@ -495,7 +495,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, valeurs_messages: e.target.value })}
                 rows={4}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Quelles sont les valeurs et messages clés ?"
+                placeholder="Quelles sont les valeurs et messages clÃ©s ?"
               />
             </div>
           </div>
@@ -509,7 +509,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
           <div className="p-4 sm:p-6 space-y-4">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-3">
               <label className="block text-sm font-bold text-gray-900">
-                Définir 3 à 6 thèmes principaux
+                DÃ©finir 3 Ã  6 thÃ¨mes principaux
               </label>
               <button
                 type="button"
@@ -538,7 +538,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                   type="text"
                   value={pilier.titre}
                   onChange={(e) => updatePilier(index, 'titre', e.target.value)}
-                  placeholder="Titre du pilier (ex: Éducation/Conseils)"
+                  placeholder="Titre du pilier (ex: Ã‰ducation/Conseils)"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 font-semibold"
                 />
 
@@ -570,7 +570,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
           <div className="p-4 sm:p-6 space-y-4">
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-3">
-                Formats envisagés
+                Formats envisagÃ©s
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                 {CONTENT_FORMATS.map((format) => (
@@ -592,9 +592,9 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
 
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
-                Fréquence & calendrier éditorial
+                FrÃ©quence & calendrier Ã©ditorial
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Quand publier, à quelle fréquence, sur quels canaux)
+                  (Quand publier, Ã  quelle frÃ©quence, sur quels canaux)
                 </span>
               </label>
               <textarea
@@ -608,9 +608,9 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
 
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
-                Workflow & rôles
+                Workflow & rÃ´les
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Qui crée, valide, publie, modère, analyse)
+                  (Qui crÃ©e, valide, publie, modÃ¨re, analyse)
                 </span>
               </label>
               <textarea
@@ -618,7 +618,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, workflow_roles: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Définissez les rôles et le workflow..."
+                placeholder="DÃ©finissez les rÃ´les et le workflow..."
               />
             </div>
           </div>
@@ -650,7 +650,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Veille / Benchmark concurrents
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Ce que font les structures similaires, opportunités, bonnes pratiques)
+                  (Ce que font les structures similaires, opportunitÃ©s, bonnes pratiques)
                 </span>
               </label>
               <textarea
@@ -718,7 +718,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                     type="text"
                     value={kpi.periodicite}
                     onChange={(e) => updateKPI(index, 'periodicite', e.target.value)}
-                    placeholder="Périodicité (ex: Mensuel)"
+                    placeholder="PÃ©riodicitÃ© (ex: Mensuel)"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
                   />
                 </div>
@@ -729,7 +729,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Cadre de suivi
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Périodicité, analyses & ajustements réguliers)
+                  (PÃ©riodicitÃ©, analyses & ajustements rÃ©guliers)
                 </span>
               </label>
               <textarea
@@ -737,23 +737,23 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, cadre_suivi: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Comment et quand mesurer les résultats ?"
+                placeholder="Comment et quand mesurer les rÃ©sultats ?"
               />
             </div>
           </div>
         )}
       </div>
 
-      {/* 8. Canaux & mix média (PESO) */}
+      {/* 8. Canaux & mix mÃ©dia (PESO) */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <SectionHeader title="8. Canaux & Mix Média (Modèle PESO)" section="peso" />
+        <SectionHeader title="8. Canaux & Mix MÃ©dia (ModÃ¨le PESO)" section="peso" />
         {expandedSections.peso && (
           <div className="p-4 sm:p-6 space-y-4">
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Owned Media
                 <span className="text-gray-500 font-normal text-xs ml-2">
-                  (Site web, blog, comptes réseaux sociaux propres)
+                  (Site web, blog, comptes rÃ©seaux sociaux propres)
                 </span>
               </label>
               <textarea
@@ -761,7 +761,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, owned_media: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Médias possédés par la marque..."
+                placeholder="MÃ©dias possÃ©dÃ©s par la marque..."
               />
             </div>
 
@@ -769,7 +769,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Shared Media
                 <span className="text-gray-500 font-normal text-xs ml-2">
-                  (Communauté, partage, contenu généré par utilisateurs, social media organique)
+                  (CommunautÃ©, partage, contenu gÃ©nÃ©rÃ© par utilisateurs, social media organique)
                 </span>
               </label>
               <textarea
@@ -777,7 +777,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, shared_media: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Stratégie de partage et d'engagement communautaire..."
+                placeholder="StratÃ©gie de partage et d'engagement communautaire..."
               />
             </div>
 
@@ -785,7 +785,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Paid Media
                 <span className="text-gray-500 font-normal text-xs ml-2">
-                  (Publicité, posts sponsorisés, boost, ads)
+                  (PublicitÃ©, posts sponsorisÃ©s, boost, ads)
                 </span>
               </label>
               <textarea
@@ -793,7 +793,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, paid_media: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Stratégie de publicité payante..."
+                placeholder="StratÃ©gie de publicitÃ© payante..."
               />
             </div>
 
@@ -809,7 +809,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, earned_media: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Stratégie de relations publiques et partenariats..."
+                placeholder="StratÃ©gie de relations publiques et partenariats..."
               />
             </div>
           </div>
@@ -825,7 +825,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Temps humain
                 <span className="text-gray-500 font-normal text-xs ml-2">
-                  (Création, modération, community management, validation)
+                  (CrÃ©ation, modÃ©ration, community management, validation)
                 </span>
               </label>
               <textarea
@@ -833,7 +833,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, temps_humain: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Ressources humaines nécessaires..."
+                placeholder="Ressources humaines nÃ©cessaires..."
               />
             </div>
 
@@ -841,7 +841,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Outils
                 <span className="text-gray-500 font-normal text-xs ml-2">
-                  (Logiciels/matériel pour édition média, planification, analyse, veille)
+                  (Logiciels/matÃ©riel pour Ã©dition mÃ©dia, planification, analyse, veille)
                 </span>
               </label>
               <textarea
@@ -849,15 +849,15 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, outils: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Outils et logiciels nécessaires..."
+                placeholder="Outils et logiciels nÃ©cessaires..."
               />
             </div>
 
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
-                Budget pub éventuel
+                Budget pub Ã©ventuel
                 <span className="text-gray-500 font-normal text-xs ml-2">
-                  (Montant, délais, priorisation)
+                  (Montant, dÃ©lais, priorisation)
                 </span>
               </label>
               <textarea
@@ -865,7 +865,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, budget_pub: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Budget alloué à la publicité..."
+                placeholder="Budget allouÃ© Ã  la publicitÃ©..."
               />
             </div>
           </div>
@@ -874,14 +874,14 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
 
       {/* 10. Planning & optimisation */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <SectionHeader title="10. Planning, Itération & Optimisation" section="planning" />
+        <SectionHeader title="10. Planning, ItÃ©ration & Optimisation" section="planning" />
         {expandedSections.planning && (
           <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
                 Planning global
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Contenu, publication, analyse, campagnes, saisons, événements, échéances)
+                  (Contenu, publication, analyse, campagnes, saisons, Ã©vÃ©nements, Ã©chÃ©ances)
                 </span>
               </label>
               <textarea
@@ -889,14 +889,14 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, planning_global: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-gray-900"
-                placeholder="Planning global de la stratégie..."
+                placeholder="Planning global de la stratÃ©gie..."
               />
             </div>
 
-            {/* Calendrier Éditorial */}
+            {/* Calendrier Ã‰ditorial */}
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-3">
-                Calendrier Éditorial
+                Calendrier Ã‰ditorial
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
                   (Planification visuelle des contenus par plateforme)
                 </span>
@@ -914,13 +914,13 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
               ) : strategy?.id ? (
                 <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 text-center">
                   <p className="text-yellow-800 font-medium">
-                    Calendrier non trouvé. Il sera créé automatiquement lors de la prochaine sauvegarde.
+                    Calendrier non trouvÃ©. Il sera crÃ©Ã© automatiquement lors de la prochaine sauvegarde.
                   </p>
                 </div>
               ) : (
                 <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4 text-center">
                   <p className="text-blue-800 font-medium">
-                    Le calendrier éditorial sera disponible après la création de la stratégie.
+                    Le calendrier Ã©ditorial sera disponible aprÃ¨s la crÃ©ation de la stratÃ©gie.
                   </p>
                 </div>
               )}
@@ -928,7 +928,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
 
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
-                Processus d'itération
+                Processus d'itÃ©ration
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
                   (Tester, mesurer, ajuster ce qui marche ou non)
                 </span>
@@ -938,15 +938,15 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, processus_iteration: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Comment mesurer et ajuster la stratégie..."
+                placeholder="Comment mesurer et ajuster la stratÃ©gie..."
               />
             </div>
 
             <div>
               <label className="block text-sm font-bold text-gray-900 mb-2">
-                Mise à jour & réévaluation
+                Mise Ã  jour & rÃ©Ã©valuation
                 <span className="text-gray-500 font-normal text-xs ml-1 sm:ml-2 block sm:inline">
-                  (Mise à jour régulière, réévaluation des piliers, adaptation selon résultats)
+                  (Mise Ã  jour rÃ©guliÃ¨re, rÃ©Ã©valuation des piliers, adaptation selon rÃ©sultats)
                 </span>
               </label>
               <textarea
@@ -954,7 +954,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
                 onChange={(e) => setFormData({ ...formData, mise_a_jour: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-gray-900"
-                placeholder="Fréquence et processus de mise à jour..."
+                placeholder="FrÃ©quence et processus de mise Ã  jour..."
               />
             </div>
           </div>
@@ -966,7 +966,7 @@ export function StrategyForm({ clientId, strategy, onSave, onCancel }: StrategyF
         <label className="block text-sm font-bold text-gray-900 mb-2">
           Notes internes
           <span className="text-gray-500 font-normal text-xs ml-2">
-            (Informations complémentaires, non visibles dans la présentation client)
+            (Informations complÃ©mentaires, non visibles dans la prÃ©sentation client)
           </span>
         </label>
         <textarea

@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Header } from "../../../../../../compta-app(BACKUP_FOLDER)/components/layout/Header";
-import { ClientForm } from "../../../../../../compta-app(BACKUP_FOLDER)/components/clients/ClientForm";
+import { Header } from "../../../../../components/layout/Header";
+import { ClientForm } from "../../../../../components/clients/ClientForm";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { Client } from "@/types/database";

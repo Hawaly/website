@@ -1,7 +1,5 @@
 // Import dynamique de PDFKit pour éviter les problèmes de bundling
-// PDFKit sera chargé depuis node_modules au runtime (grâce à l'externalisation dans next.config.mjs)
-import PDFDocument from 'pdfkit';
-import { SwissQRBill } from 'swissqrbill/pdf';
+// PDFKit sera chargé depuis node_modules au runtime
 import { CompanySettings, Client, Invoice } from '@/types/database';
 
 export interface QrBillData {
@@ -17,6 +15,15 @@ export interface QrBillData {
 export async function generateSwissQrBill(data: QrBillData): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     try {
+      // Charger PDFKit et swissqrbill au runtime depuis node_modules
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const pdfkitModule = require('pdfkit');
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const swissQrBillModule = require('swissqrbill/pdf');
+
+      const PDFDocument = pdfkitModule?.default ?? pdfkitModule;
+      const SwissQRBill = swissQrBillModule?.SwissQRBill ?? swissQrBillModule?.default ?? swissQrBillModule;
+
       const { invoice, client, companySettings } = data;
 
       // Validation
@@ -137,7 +144,7 @@ export async function generateSwissQrBill(data: QrBillData): Promise<Buffer> {
       const chunks: Buffer[] = [];
 
       // Collecter les chunks du PDF
-      pdf.on('data', (chunk) => chunks.push(chunk));
+      pdf.on('data', (chunk: Buffer) => chunks.push(chunk));
       pdf.on('end', () => resolve(Buffer.concat(chunks)));
       pdf.on('error', reject);
 
