@@ -4,6 +4,7 @@ export type ClientType = 'oneshot' | 'mensuel';
 export type ClientStatus = 'actif' | 'pause' | 'termine' | 'potentiel';
 export type MandatStatus = 'en_cours' | 'termine' | 'annule';
 export type InvoiceStatus = 'brouillon' | 'envoyee' | 'payee' | 'annulee';
+export type InvoiceRecurrence = 'oneshot' | 'mensuel' | 'trimestriel' | 'annuel';
 export type ExpenseType = 'client_mandat' | 'yourstory';
 export type RecurrenceType = 'oneshot' | 'mensuel';
 export type TaskStatus = 'a_faire' | 'en_cours' | 'terminee';
@@ -139,6 +140,19 @@ export interface Invoice {
   status: InvoiceStatus;
   pdf_path: string | null;
   qr_additional_info: string | null;
+  
+  // Champs pour les factures récurrentes
+  is_recurring: InvoiceRecurrence;
+  recurrence_day: number | null; // Jour du mois (1-31) pour la génération automatique
+  parent_invoice_id: number | null; // Référence à la facture parente si générée automatiquement
+  next_generation_date: string | null; // Prochaine date de génération
+  auto_send: boolean; // Envoi automatique lors de la génération
+  
+  // Gestion de la durée limitée
+  max_occurrences: number | null; // Nombre maximum de factures à générer (null = illimité)
+  occurrences_count: number; // Nombre de factures déjà générées
+  end_date: string | null; // Date de fin de la récurrence (optionnel)
+  
   created_at: string;
   updated_at: string;
 }
@@ -237,6 +251,14 @@ export const EXPENSE_TYPE_COLORS: Record<ExpenseType, string> = {
 export const RECURRENCE_LABELS: Record<RecurrenceType, string> = {
   oneshot: 'Ponctuelle',
   mensuel: 'Mensuelle',
+};
+
+// Labels pour la récurrence des factures
+export const INVOICE_RECURRENCE_LABELS: Record<InvoiceRecurrence, string> = {
+  oneshot: 'Unique',
+  mensuel: 'Mensuelle',
+  trimestriel: 'Trimestrielle',
+  annuel: 'Annuelle',
 };
 
 // Labels pour les enums

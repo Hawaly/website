@@ -19,7 +19,9 @@ import {
   Calculator,
   Building2,
   ClipboardList,
-  Share2
+  Share2,
+  BarChart3,
+  RefreshCw
 } from "lucide-react";
 
 interface MenuItem {
@@ -52,6 +54,8 @@ const menuItems: MenuEntry[] = [
     color: "from-brand-orange to-brand-orange-light",
     children: [
       { href: "/factures", label: "Factures", icon: FileText, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/factures-recurrentes", label: "Factures récurrentes", icon: RefreshCw, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/rapports-mensuels", label: "Rapports mensuels", icon: BarChart3, color: "from-brand-orange to-brand-orange-light" },
       { href: "/depenses", label: "Dépenses", icon: Receipt, color: "from-brand-orange to-brand-orange-light" },
     ]
   },
@@ -172,7 +176,7 @@ export function Sidebar() {
           <div className="relative">
             <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-brand group-hover:shadow-brand-lg transition-all duration-300 p-1.5">
               <img 
-                src="/images/urstory_black.png" 
+                src="/images/logos/urstoryBlack.png" 
                 alt="YourStory Logo" 
                 className="w-8 h-8 object-contain"
               />

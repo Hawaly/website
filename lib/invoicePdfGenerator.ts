@@ -60,7 +60,7 @@ export async function generateInvoicePDF(data: InvoiceData): Promise<Uint8Array>
   // =========================
   let logoImage;
   try {
-    const logoPath = path.join(process.cwd(), 'public', 'images', 'urstory_black.png');
+    const logoPath = path.join(process.cwd(), 'public', 'images', 'logos', 'urstoryBlack.png');
     const logoBytes = fs.readFileSync(logoPath);
     logoImage = await pdfDoc.embedPng(logoBytes);
   } catch {

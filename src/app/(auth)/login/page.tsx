@@ -51,7 +51,7 @@ export default function LoginPage() {
           <div className="relative inline-flex">
             <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-xl shadow-orange-500/30 transform hover:scale-105 transition-transform p-3">
               <img 
-                src="/images/urstory_black.png" 
+                src="/images/logos/urstoryBlack.png" 
                 alt="YourStory Logo" 
                 className="w-14 h-14 object-contain"
               />

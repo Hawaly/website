@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Header } from '@/components/layout/Header';
 import { InvoiceItemsForm } from '@/components/invoices/InvoiceItemsForm';
+import RecurringInvoiceConfig from '@/components/RecurringInvoiceConfig';
 import { ArrowLeft, Save, Loader2, Info } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
-import { Client, Mandat, InvoiceStatus, InvoiceItemInsert } from "@/types/database";
+import { Client, Mandat, InvoiceStatus, InvoiceItemInsert, InvoiceRecurrence } from "@/types/database";
 import { generateInvoiceNumber, calculateInvoiceTotals, formatCurrency, DEFAULT_TVA_RATE } from "@/lib/invoiceHelpers";
 
 export default function NewInvoicePage() {
@@ -25,6 +26,16 @@ export default function NewInvoicePage() {
     status: "brouillon" as InvoiceStatus,
     qr_additional_info: "",
     tva_applicable: true, // Par défaut, TVA applicable
+  });
+
+  // Configuration de récurrence
+  const [recurringConfig, setRecurringConfig] = useState({
+    is_recurring: 'oneshot' as InvoiceRecurrence,
+    recurrence_day: null as number | null,
+    auto_send: false,
+    max_occurrences: null as number | null,
+    end_date: null as string | null,
+    next_generation_date: null as string | null,
   });
 
   const [items, setItems] = useState<Omit<InvoiceItemInsert, 'invoice_id'>[]>([
@@ -98,6 +109,15 @@ export default function NewInvoicePage() {
         total_ttc: totals.total_ttc,
         status: formData.status,
         pdf_path: null,
+        // Champs de récurrence
+        is_recurring: recurringConfig.is_recurring,
+        recurrence_day: recurringConfig.recurrence_day,
+        parent_invoice_id: null,
+        next_generation_date: recurringConfig.next_generation_date,
+        auto_send: recurringConfig.auto_send,
+        max_occurrences: recurringConfig.max_occurrences,
+        occurrences_count: 0,
+        end_date: recurringConfig.end_date,
       };
       
       // Essayer d'insérer avec qr_additional_info si on a une valeur
@@ -345,6 +365,13 @@ export default function NewInvoicePage() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <InvoiceItemsForm items={items} onChange={setItems} />
           </div>
+
+          {/* Configuration récurrence */}
+          <RecurringInvoiceConfig
+            value={recurringConfig}
+            onChange={setRecurringConfig}
+            totalAmount={totals.total_ttc}
+          />
 
           {/* Totaux */}
           <div className="bg-white rounded-lg shadow-md p-6">
