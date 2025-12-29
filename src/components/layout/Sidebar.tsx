@@ -21,7 +21,8 @@ import {
   ClipboardList,
   Share2,
   BarChart3,
-  RefreshCw
+  RefreshCw,
+  Film
 } from "lucide-react";
 
 interface MenuItem {
@@ -78,6 +79,7 @@ const menuItems: MenuEntry[] = [
     color: "from-brand-orange to-brand-orange-light",
     children: [
       { href: "/taches", label: "Toutes les tâches", icon: ClipboardList, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/scripts", label: "Scripts vidéo", icon: Film, color: "from-brand-orange to-brand-orange-light" },
     ]
   },
   

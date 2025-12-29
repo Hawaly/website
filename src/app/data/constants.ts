@@ -62,7 +62,7 @@ export const KPI_CARDS = [
   },
   {
     title: "Retour sur investissement garanti",
-    description: "Chaque franc investi dans vos vidéos vous rapporte en nouveaux clients et en notoriété.",
+    description: "Chaque franc investi dans vos vidéos vous rapporte plus de visibilité et plus de conversions.",
   },
 ] as const;
 
@@ -106,10 +106,6 @@ export const TESTIMONIALS = [
   {
     quote: "YourStory a su capturer la vibe unique de ClassiGym avec une qualité exceptionnelle. Leur travail reflète parfaitement notre énergie et notre passion pour le fitness. Chaque vidéo respire l'authenticité !",
     name: "Alessio, Fondateur @ ClassiGym",
-  },
-  {
-    quote: "Des stratégies créatives qui font la différence ! L'équipe YourStory comprend notre vision et crée des contenus dans une superbe ambiance de travail. Leur créativité booste vraiment notre image de marque.",
-    name: "Sami, Fondateur @ NxtLvl",
   },
   {
     quote: "La créativité et l'ambiance que YourStory apporte à nos vidéos sont incroyables. Ils ont su créer un univers visuel qui correspond parfaitement à l'identité de Boca. Nos clients sont conquis !",

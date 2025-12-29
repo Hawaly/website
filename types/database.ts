@@ -557,3 +557,21 @@ export const CONTENT_FORMATS = [
   'UGC (User Generated Content)',
 ] as const;
 
+// =========================================================
+// VIDEO SCRIPT
+// =========================================================
+
+export interface VideoScript {
+  id: number;
+  title: string;
+  content: string;
+  client_id: number | null;
+  mandat_id: number | null;
+  editorial_post_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type VideoScriptInsert = Omit<VideoScript, 'id' | 'created_at' | 'updated_at'>;
+export type VideoScriptUpdate = Partial<Omit<VideoScript, 'id' | 'created_at' | 'updated_at'>>;
+

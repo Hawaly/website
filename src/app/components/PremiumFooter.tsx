@@ -22,48 +22,48 @@ function ArrowRightIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function PremiumFooter() {
   return (
-    <footer className="relative px-4 py-6 sm:py-8 md:px-6 overflow-hidden bg-gradient-to-b from-orange-500/5 via-orange-500/3 to-transparent">
+    <footer className="relative px-4 py-8 sm:py-10 md:px-6 overflow-hidden bg-gradient-to-b from-orange-500/5 via-orange-500/3 to-transparent">
       {/* Subtle background glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--orange-alpha-10)_0%,_transparent_70%)]" />
       
       <div className="relative mx-auto max-w-6xl">
         {/* Logo centré */}
-        <div className="text-center mb-3 sm:mb-4">
+        <div className="text-center mb-5 sm:mb-5">
           <Link href="#hero" className="inline-block group">
             <Image 
               src="/images/logos/urstoryBlack.png" 
               alt="YourStory Logo" 
               width={160} 
               height={45}
-              className="h-8 sm:h-10 w-auto mx-auto transition-all duration-300 group-hover:scale-105"
+              className="h-9 sm:h-10 w-auto mx-auto transition-all duration-200 active:scale-95 sm:group-hover:scale-105"
               priority={false}
             />
           </Link>
         </div>
         
-        {/* Navigation horizontale centrée */}
-        <nav className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 mb-3 sm:mb-4" aria-label="Footer Navigation">
+        {/* Navigation horizontale centrée - optimisée pour mobile */}
+        <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 sm:gap-5 md:gap-6 mb-5 sm:mb-5" aria-label="Footer Navigation">
           {NAV_LINKS.map((link) => (
             <a 
               key={link.href} 
               href={link.href} 
-              className="text-xs sm:text-sm font-medium text-gray-600 hover:text-orange-500 transition-colors duration-200"
+              className="text-sm sm:text-sm font-medium text-gray-600 active:text-orange-500 sm:hover:text-orange-500 transition-colors duration-200 py-1"
             >
               {link.label}
             </a>
           ))}
         </nav>
         
-        {/* Nous contacter + Social icons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-4 sm:mb-6">
-          <span className="text-xs sm:text-sm font-medium text-gray-700">Nous contacter</span>
+        {/* Nous contacter + Social icons - meilleur espacement mobile */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-6 sm:mb-6">
+          <span className="text-sm sm:text-sm font-semibold text-gray-700">Nous contacter</span>
           
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-3 sm:gap-3">
             <a 
-              href="https://instagram.com/yourstory" 
+              href="https://www.instagram.com/urstory.ch/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl border-2 border-white/60 bg-white/50 backdrop-blur-xl text-gray-600 transition-all duration-300 hover:border-orange-500/50 hover:bg-orange-500/10 hover:text-orange-500 hover:scale-110"
+              className="inline-flex items-center justify-center h-11 w-11 sm:h-11 sm:w-11 rounded-xl border-2 border-white/60 bg-white/50 backdrop-blur-xl text-gray-600 transition-all duration-200 active:scale-95 active:bg-orange-500/10 sm:hover:border-orange-500/50 sm:hover:bg-orange-500/10 sm:hover:text-orange-500 sm:hover:scale-105"
               aria-label="Instagram"
             >
               <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -72,22 +72,10 @@ export default function PremiumFooter() {
             </a>
             
             <a 
-              href="https://linkedin.com/company/yourstory" 
+              href="https://www.tiktok.com/@urstory.ch" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl border-2 border-white/60 bg-white/50 backdrop-blur-xl text-gray-600 transition-all duration-300 hover:border-orange-500/50 hover:bg-orange-500/10 hover:text-orange-500 hover:scale-110"
-              aria-label="LinkedIn"
-            >
-              <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-            </a>
-            
-            <a 
-              href="https://tiktok.com/@yourstory" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl border-2 border-white/60 bg-white/50 backdrop-blur-xl text-gray-600 transition-all duration-300 hover:border-orange-500/50 hover:bg-orange-500/10 hover:text-orange-500 hover:scale-110"
+              className="inline-flex items-center justify-center h-11 w-11 sm:h-11 sm:w-11 rounded-xl border-2 border-white/60 bg-white/50 backdrop-blur-xl text-gray-600 transition-all duration-200 active:scale-95 active:bg-orange-500/10 sm:hover:border-orange-500/50 sm:hover:bg-orange-500/10 sm:hover:text-orange-500 sm:hover:scale-105"
               aria-label="TikTok"
             >
               <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -98,33 +86,33 @@ export default function PremiumFooter() {
         </div>
         
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mb-3 sm:mb-4" />
+        <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mb-5 sm:mb-5" />
         
-        {/* Bottom: Copyright + Legal Links + CTA */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-4 sm:gap-6">
+        {/* Bottom: Copyright + Legal Links + CTA - meilleur layout mobile */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-5 sm:gap-6">
           {/* Copyright */}
-          <p className="text-xs sm:text-sm text-gray-500 text-center lg:text-left order-2 lg:order-1">
+          <p className="text-sm sm:text-sm text-gray-500 text-center lg:text-left order-2 lg:order-1 font-medium">
             © {new Date().getFullYear()} YourStory. Tous droits réservés.
           </p>
           
-          {/* Legal Links */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5 text-xs sm:text-sm text-gray-500 order-3 lg:order-2">
-            <a href="/cgv" className="hover:text-orange-500 transition-colors duration-200">
+          {/* Legal Links - meilleur espacement et touch targets */}
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:gap-5 md:gap-6 text-sm sm:text-sm text-gray-500 order-3 lg:order-2">
+            <a href="/cgv" className="active:text-orange-500 sm:hover:text-orange-500 transition-colors duration-200 py-1 font-medium">
               CGV
             </a>
-            <a href="/mentions-legales" className="hover:text-orange-500 transition-colors duration-200">
+            <a href="/mentions-legales" className="active:text-orange-500 sm:hover:text-orange-500 transition-colors duration-200 py-1 font-medium">
               Mentions légales
             </a>
-            <a href="/politique-confidentialite" className="hover:text-orange-500 transition-colors duration-200">
-              Politique de confidentialité
+            <a href="/politique-confidentialite" className="active:text-orange-500 sm:hover:text-orange-500 transition-colors duration-200 py-1 font-medium">
+              Confidentialité
             </a>
           </div>
           
-          {/* CTA Button */}
+          {/* CTA Button - meilleure taille touch */}
           <div className="order-1 lg:order-3">
-            <CalendlyButton className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-gradient-to-r from-orange-600 to-orange-500 px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30">
+            <CalendlyButton className="inline-flex items-center gap-2 sm:gap-2 rounded-full bg-gradient-to-r from-orange-600 to-orange-500 px-6 sm:px-6 py-3 sm:py-3 text-sm sm:text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition-all duration-200 active:scale-95 sm:hover:scale-105 sm:hover:shadow-xl sm:hover:shadow-orange-500/30 min-h-[48px]">
               <span className="whitespace-nowrap">Prendre un rendez-vous</span>
-              <ArrowRightIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <ArrowRightIcon className="h-4 w-4 sm:h-4 sm:w-4" />
             </CalendlyButton>
           </div>
         </div>

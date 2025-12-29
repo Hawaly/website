@@ -85,15 +85,15 @@ export default function ClientLogosCarousel({ logos }: ClientLogosCarouselProps)
 
   return (
     <div className="relative px-12 sm:px-16 md:px-20 overflow-visible">
-      {/* Bouton précédent */}
+      {/* Bouton précédent - meilleure taille touch */}
       <button
         onClick={goToPrev}
         disabled={!canGoPrev}
         aria-label="Logo précédent"
-        className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/40 bg-white/80 backdrop-blur-xl shadow-xl transition-all duration-300 hover:scale-110 hover:bg-white hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 group`}
+        className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-white/60 bg-white/95 backdrop-blur-xl shadow-lg transition-all duration-200 active:scale-90 sm:hover:scale-105 sm:hover:bg-white sm:hover:border-orange-500/50 sm:hover:shadow-orange-500/20 disabled:opacity-30 disabled:cursor-not-allowed group`}
       >
         <svg
-          className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700 transition-colors duration-300 group-hover:text-orange-600"
+          className="h-5 w-5 sm:h-5 sm:w-5 text-gray-700 transition-colors duration-200 group-hover:text-orange-600"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -103,37 +103,37 @@ export default function ClientLogosCarousel({ logos }: ClientLogosCarouselProps)
         </svg>
       </button>
 
-      {/* Conteneur de défilement */}
+      {/* Conteneur de défilement - optimisé mobile */}
       <div
         ref={scrollContainerRef}
-        className="flex gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory py-4 -my-4"
-        style={{ scrollSnapType: 'x mandatory' }}
+        className="flex gap-4 sm:gap-5 md:gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory py-2 sm:py-4"
+        style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollPaddingLeft: '1rem', scrollPaddingRight: '1rem' }}
       >
         {logos.map((logo) => (
           <div
             key={logo.alt}
-            className="group relative flex items-center justify-center flex-shrink-0 h-20 sm:h-24 md:h-28 w-32 sm:w-40 md:w-48 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-white/30 bg-white/40 backdrop-blur-xl transition-all duration-300 hover:border-orange-500/40 hover:bg-white/60 hover:shadow-xl hover:scale-105 snap-start"
+            className="group relative flex items-center justify-center flex-shrink-0 h-20 sm:h-24 md:h-28 w-32 sm:w-40 md:w-48 p-4 sm:p-5 rounded-xl border border-white/50 bg-white/60 backdrop-blur-xl transition-all duration-200 active:scale-95 sm:hover:border-orange-500/40 sm:hover:bg-white/80 sm:hover:shadow-xl sm:hover:scale-105 snap-center"
           >
             <Image
               src={logo.src}
               alt={logo.alt}
-              width={120}
-              height={80}
-              className="max-w-full max-h-full w-auto h-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+              width={140}
+              height={90}
+              className="max-w-full max-h-full w-auto h-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-200"
             />
           </div>
         ))}
       </div>
 
-      {/* Bouton suivant */}
+      {/* Bouton suivant - meilleure taille touch */}
       <button
         onClick={goToNext}
         disabled={!canGoNext}
         aria-label="Logo suivant"
-        className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/40 bg-white/80 backdrop-blur-xl shadow-xl transition-all duration-300 hover:scale-110 hover:bg-white hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 group`}
+        className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-white/60 bg-white/95 backdrop-blur-xl shadow-lg transition-all duration-200 active:scale-90 sm:hover:scale-105 sm:hover:bg-white sm:hover:border-orange-500/50 sm:hover:shadow-orange-500/20 disabled:opacity-30 disabled:cursor-not-allowed group`}
       >
         <svg
-          className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700 transition-colors duration-300 group-hover:text-orange-600"
+          className="h-5 w-5 sm:h-5 sm:w-5 text-gray-700 transition-colors duration-200 group-hover:text-orange-600"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

@@ -104,18 +104,18 @@ function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
 
   return (
     <div className="relative overflow-visible">
-      {/* Masques de dégradé optimisés pour effet fade */}
-      <div className="absolute left-0 top-6 bottom-6 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-6 bottom-6 w-16 sm:w-24 md:w-32 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
+      {/* Masques de dégradé optimisés pour effet fade - plus subtils sur mobile */}
+      <div className="absolute left-0 top-6 bottom-6 w-8 sm:w-16 md:w-24 bg-gradient-to-r from-white via-white/60 to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-6 bottom-6 w-8 sm:w-16 md:w-24 bg-gradient-to-l from-white via-white/60 to-transparent z-10 pointer-events-none" />
       
-      {/* Conteneur principal */}
-      <div className="relative px-10 sm:px-14 md:px-16 overflow-visible">
-        {/* Bouton précédent optimisé */}
+      {/* Conteneur principal - meilleur padding mobile */}
+      <div className="relative px-6 sm:px-12 md:px-16 overflow-visible">
+        {/* Bouton précédent optimisé - meilleure taille touch */}
         <button
           onClick={goToPrev}
           disabled={!canGoPrev}
           aria-label="Témoignage précédent"
-          className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/60 bg-white/95 backdrop-blur-md shadow-xl transition-all duration-200 hover:scale-105 hover:bg-white hover:border-orange-500/50 hover:shadow-orange-500/20 disabled:opacity-20 disabled:cursor-not-allowed disabled:hover:scale-100 group active:scale-95`}
+          className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/60 bg-white/95 backdrop-blur-md shadow-lg sm:shadow-xl transition-all duration-200 active:scale-90 sm:hover:scale-105 sm:hover:bg-white sm:hover:border-orange-500/50 sm:hover:shadow-orange-500/20 disabled:opacity-20 disabled:cursor-not-allowed disabled:hover:scale-100 group`}
         >
           <svg
             className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700 transition-colors duration-200 group-hover:text-orange-600 group-disabled:text-gray-400"
@@ -128,24 +128,24 @@ function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
           </svg>
         </button>
 
-        {/* Conteneur de défilement optimisé */}
+        {/* Conteneur de défilement optimisé - meilleur sizing mobile */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory py-6 -my-6"
+          className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory py-4 sm:py-6 -my-4 sm:-my-6"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.name}
-              className="group relative flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[45vw] lg:w-[32vw] max-w-md snap-start"
+              className="group relative flex-shrink-0 w-[82vw] sm:w-[65vw] md:w-[45vw] lg:w-[32vw] max-w-[340px] sm:max-w-md snap-center"
             >
-              {/* Card optimisée */}
-              <div className="h-full flex flex-col rounded-2xl border-2 border-white/60 bg-gradient-to-br from-white/70 via-white/60 to-orange-50/20 px-5 sm:px-6 py-6 sm:py-7 shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/10">
-                {/* Header avec étoiles */}
+              {/* Card optimisée pour mobile */}
+              <div className="h-full flex flex-col rounded-2xl border-2 border-white/60 bg-gradient-to-br from-white/80 via-white/70 to-orange-50/30 px-5 sm:px-6 py-5 sm:py-6 shadow-lg sm:shadow-xl backdrop-blur-xl transition-all duration-200 active:scale-[0.99] sm:hover:-translate-y-1 sm:hover:border-orange-500/30 sm:hover:shadow-2xl sm:hover:shadow-orange-500/10">
+                {/* Header avec étoiles - meilleur espacement */}
                 <div className="flex items-start justify-between mb-4 sm:mb-5">
                   <StarRating />
                   <svg 
-                    className="h-8 w-8 sm:h-10 sm:w-10 text-orange-500/20 flex-shrink-0" 
+                    className="h-7 w-7 sm:h-9 sm:w-9 text-orange-500/25 flex-shrink-0" 
                     fill="currentColor" 
                     viewBox="0 0 24 24"
                     aria-hidden="true"
@@ -154,16 +154,16 @@ function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
                   </svg>
                 </div>
                 
-                {/* Quote text optimisé pour la lisibilité */}
-                <blockquote className="flex-1 mb-5 sm:mb-6">
-                  <p className="text-sm sm:text-base leading-relaxed text-gray-800 font-medium">
+                {/* Quote text optimisé pour la lisibilité mobile */}
+                <blockquote className="flex-1 mb-4 sm:mb-5">
+                  <p className="text-sm sm:text-base leading-[1.7] text-gray-700 font-medium">
                     {testimonial.quote}
                   </p>
                 </blockquote>
                 
-                {/* Author avec design amélioré */}
+                {/* Author avec design amélioré pour mobile */}
                 <div className="flex items-center gap-3 pt-4 border-t border-gray-200/60">
-                  <div className="flex-shrink-0 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-md shadow-orange-500/30 text-lg sm:text-xl font-bold">
+                  <div className="flex-shrink-0 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-md shadow-orange-500/30 text-base sm:text-lg font-bold">
                     {testimonial.name.charAt(0)}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -171,14 +171,14 @@ function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
                       {testimonial.name.split(',')[0]}
                     </p>
                     {testimonial.name.includes('@') && (
-                      <p className="text-xs sm:text-sm text-gray-600 truncate">
+                      <p className="text-xs sm:text-sm text-gray-500 truncate font-medium">
                         {testimonial.name.split('@')[1]?.trim()}
                       </p>
                     )}
                   </div>
                   {/* Badge vérifié */}
                   <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20" aria-label="Vérifié">
+                    <svg className="h-5 w-5 sm:h-5 sm:w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20" aria-label="Vérifié">
                       <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -188,12 +188,12 @@ function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
           ))}
         </div>
 
-        {/* Bouton suivant optimisé */}
+        {/* Bouton suivant optimisé - meilleure taille touch */}
         <button
           onClick={goToNext}
           disabled={!canGoNext}
           aria-label="Témoignage suivant"
-          className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/60 bg-white/95 backdrop-blur-md shadow-xl transition-all duration-200 hover:scale-105 hover:bg-white hover:border-orange-500/50 hover:shadow-orange-500/20 disabled:opacity-20 disabled:cursor-not-allowed disabled:hover:scale-100 group active:scale-95`}
+          className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/60 bg-white/95 backdrop-blur-md shadow-lg sm:shadow-xl transition-all duration-200 active:scale-90 sm:hover:scale-105 sm:hover:bg-white sm:hover:border-orange-500/50 sm:hover:shadow-orange-500/20 disabled:opacity-20 disabled:cursor-not-allowed disabled:hover:scale-100 group`}
         >
           <svg
             className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700 transition-colors duration-200 group-hover:text-orange-600 group-disabled:text-gray-400"
@@ -207,18 +207,18 @@ function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
         </button>
       </div>
 
-      {/* Indicateurs de pagination optimisés */}
-      <div className="mt-6 sm:mt-8 flex items-center justify-center gap-1.5 sm:gap-2">
+      {/* Indicateurs de pagination optimisés - plus grands pour touch */}
+      <div className="mt-6 sm:mt-8 flex items-center justify-center gap-2 sm:gap-2">
         {testimonials.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
             aria-label={`Aller au témoignage ${index + 1}`}
             aria-current={index === currentIndex ? 'true' : 'false'}
-            className={`h-2 rounded-full transition-all duration-300 hover:opacity-100 ${
+            className={`h-2.5 sm:h-2 rounded-full transition-all duration-200 active:scale-90 ${
               index === currentIndex
                 ? 'w-8 sm:w-10 bg-gradient-to-r from-orange-500 to-orange-600 shadow-sm shadow-orange-500/40 opacity-100'
-                : 'w-2 bg-gray-300 opacity-50 hover:bg-gray-400'
+                : 'w-2.5 sm:w-2 bg-gray-300 opacity-60 active:bg-gray-400 sm:hover:bg-gray-400'
             }`}
           />
         ))}
@@ -226,7 +226,7 @@ function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
 
       {/* Compteur de témoignages */}
       <div className="mt-4 text-center">
-        <span className="text-xs sm:text-sm font-medium text-gray-600">
+        <span className="text-sm sm:text-sm font-semibold text-gray-500">
           {currentIndex + 1} / {testimonials.length} témoignages
         </span>
       </div>

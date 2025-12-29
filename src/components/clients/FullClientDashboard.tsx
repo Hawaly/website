@@ -22,6 +22,7 @@ import { Card } from '@/components/ui/Card';
 import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import type { Client, SocialMediaStrategy, Mandat, Invoice } from '@/types/database';
+import { ClientEditorialCalendar } from './ClientEditorialCalendar';
 
 interface FullClientDashboardProps {
   client: Client;
@@ -523,6 +524,19 @@ export function FullClientDashboard({ client }: FullClientDashboardProps) {
           </Card>
         </div>
       </div>
+
+      {/* Calendrier Éditorial */}
+      <Card className="p-4 sm:p-6">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-2 bg-purple-100 rounded-lg sm:rounded-xl">
+              <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+            </div>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Calendrier Éditorial</h2>
+          </div>
+        </div>
+        <ClientEditorialCalendar clientId={client.id} />
+      </Card>
 
       {/* Aperçus détaillés */}
       <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">

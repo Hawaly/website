@@ -101,56 +101,57 @@ export default function Page() {
   );
 }
 
-// Header Component - Optimisé et mémorisé
+// Header Component - Optimisé pour mobile
 function Header() {
   return (
-    <header className="sticky top-0 z-50 px-3 py-2 sm:px-4 sm:py-2.5 md:px-6 md:py-3 bg-white/80 md:bg-transparent">
-      <div className="mx-auto flex max-w-5xl items-center justify-between glass-nav px-3 py-2 sm:px-4 sm:py-2.5 md:px-6 md:py-3.5">
+    <header className="sticky top-0 z-50 px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-3">
+      {/* Navigation bar - glass effect visible, header transparent */}
+      <div className="mx-auto flex max-w-5xl items-center justify-between glass-nav px-4 py-3 sm:px-5 sm:py-3.5 md:px-6 md:py-3.5">
         {/* Logo glow effect - hidden on mobile */}
-        <div className="absolute left-6 top-1/2 -z-10 h-12 w-12 -translate-y-1/2 rounded-full bg-orange-500/20 blur-xl animate-pulse-subtle hidden md:block" />
+        <div className="absolute left-6 top-1/2 -z-10 h-12 w-12 -translate-y-1/2 rounded-full bg-orange-500/20 blur-xl hidden md:block" />
         
         <Link href="#hero" className="flex items-center gap-2 sm:gap-3 group relative" aria-label="YourStory – Accueil">
           <div className="relative">
             <Image 
               src="/images/logos/urstoryBlack.png" 
               alt="YourStory Logo" 
-              width={140} 
-              height={40}
-              className="h-6 w-auto sm:h-7 md:h-10 transition-all duration-300 group-hover:scale-105"
+              width={160} 
+              height={48}
+              className="h-9 w-auto sm:h-10 md:h-11 transition-all duration-200 active:scale-95 sm:group-hover:scale-105"
               priority
             />
-            <div className="absolute -inset-1 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-orange-500/10 blur-lg rounded-full" />
+            <div className="absolute -inset-1 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-orange-500/10 blur-lg rounded-full hidden sm:block" />
           </div>
           {/* Texte YourStory - caché sur mobile */}
-          <span className="hidden lg:inline text-lg md:text-xl font-bold tracking-tight text-gray-900 transition-colors duration-300 group-hover:bg-gradient-to-r group-hover:from-[var(--orange-600)] group-hover:to-[var(--orange-500)] group-hover:bg-clip-text group-hover:text-transparent">YourStory</span>
+          <span className="hidden lg:inline text-lg md:text-xl font-bold tracking-tight text-gray-900 transition-colors duration-200 group-hover:bg-gradient-to-r group-hover:from-[var(--orange-600)] group-hover:to-[var(--orange-500)] group-hover:bg-clip-text group-hover:text-transparent">YourStory</span>
         </Link>
         
-        <nav className="hidden items-center gap-6 lg:gap-8 text-xs sm:text-sm font-medium text-gray-700 lg:flex" aria-label="Navigation principale">
+        <nav className="hidden items-center gap-6 lg:gap-8 text-sm font-medium text-gray-700 lg:flex" aria-label="Navigation principale">
           {NAV_LINKS.map((link) => (
             <a 
               key={link.href} 
               href={link.href} 
-              className="relative transition-all duration-200 hover:text-[var(--accent)] after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--orange-500)] after:to-[var(--orange-400)] after:transition-all after:duration-300 hover:after:w-full whitespace-nowrap"
+              className="relative transition-all duration-200 hover:text-[var(--accent)] after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--orange-500)] after:to-[var(--orange-400)] after:transition-all after:duration-300 hover:after:w-full whitespace-nowrap py-1"
             >
               {link.label}
             </a>
           ))}
         </nav>
         
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-3 sm:gap-3">
           <a 
-            href="/login" 
-            className="hidden lg:inline-flex items-center gap-2 rounded-full border-2 border-gray-200 bg-white px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-orange-500/40 hover:bg-orange-50 hover:text-orange-600"
+            href="/client-login" 
+            className="hidden lg:inline-flex items-center gap-2 rounded-full border-2 border-gray-200 bg-white px-4 py-2 md:px-4 md:py-2 text-sm md:text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-orange-500/40 hover:bg-orange-50 hover:text-orange-600"
           >
-            <svg className="h-3.5 w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-4 w-4 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
             <span className="hidden xl:inline">Login</span>
           </a>
-          <CalendlyButton className="hidden lg:inline-flex btn-primary !px-3 !py-1.5 md:!px-4 md:!py-2 !text-xs md:!text-sm">
+          <CalendlyButton className="hidden lg:inline-flex btn-primary !px-4 !py-2 md:!px-5 md:!py-2.5 !text-sm md:!text-sm">
             <span className="hidden xl:inline">Prendre un rendez-vous</span>
             <span className="xl:hidden">RDV</span>
-            <ArrowRightIcon className="h-3 w-3 md:h-3.5 md:w-3.5 transition-transform duration-300 hover:translate-x-1" />
+            <ArrowRightIcon className="h-4 w-4 md:h-4 md:w-4 transition-transform duration-200" />
           </CalendlyButton>
           <div className="lg:hidden">
             <MobileMenu navLinks={NAV_LINKS} />

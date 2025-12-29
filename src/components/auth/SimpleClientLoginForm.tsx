@@ -113,16 +113,6 @@ export function SimpleClientLoginForm() {
               )}
             </button>
           </form>
-
-          {/* Lien vers login admin */}
-          <div className="mt-8 pt-6 border-t-2 border-gray-100 text-center">
-            <p className="text-sm text-gray-600">
-              Vous êtes administrateur ?{' '}
-              <a href="/login" className="text-brand-orange font-semibold hover:underline">
-                Connexion administrateur
-              </a>
-            </p>
-          </div>
         </div>
 
         {/* Footer */}
