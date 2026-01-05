@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Header } from "../../../../../../compta-app(BACKUP_FOLDER)/components/layout/Header";
-import { FullClientDashboard } from "../../../../../../compta-app(BACKUP_FOLDER)/components/clients/FullClientDashboard";
+import { Header } from "@/components/layout/Header";
+import { FullClientDashboard } from "@/components/clients/FullClientDashboard";
 import { 
   ArrowLeft, 
   Edit, 

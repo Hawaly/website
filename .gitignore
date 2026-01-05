@@ -66,3 +66,7 @@ yarn-error.log*
 .eslintcache
 .stylelintcache
 .cache
+
+# Backup folders
+*BACKUP*
+compta-app*

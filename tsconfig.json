@@ -21,7 +21,6 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@/compta-app/*": ["compta-app(BACKUP_FOLDER)/*"],
       "@/lib/*": ["./lib/*"],
       "@/types/*": ["./types/*"],
       "@/components/*": ["./src/components/*"],
@@ -29,5 +28,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/compta-app*", "**/*BACKUP*", "scripts"]
 }
