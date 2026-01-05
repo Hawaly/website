@@ -52,8 +52,6 @@ export function useScrollReveal() {
         elements.forEach(el => allElements.push(el));
       });
       
-      console.log('ScrollReveal: observing', allElements.length, 'elements');
-      
       allElements.forEach((el) => {
         observer.observe(el);
       });

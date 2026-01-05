@@ -3,15 +3,16 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
 
     const { data, error } = await supabaseAdmin
       .from("activities")
       .update(body)
-      .eq("id", params.id)
+      .eq("id", id)
       .select()
       .single();
 

@@ -43,7 +43,7 @@ export function LoginForm() {
               <span className="text-4xl font-bold text-white">YS</span>
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Administration</h1>
-            <p className="text-gray-600">Espace Your Story</p>
+            <p className="text-gray-600">Espace urstory.ch</p>
           </div>
 
           {/* Erreur */}
@@ -150,7 +150,7 @@ export function LoginForm() {
 
         {/* Footer */}
         <p className="text-center mt-6 text-white text-sm">
-          © 2024 YourStory Agency. Tous droits réservés.
+          © {new Date().getFullYear()} urstory.ch - Tous droits réservés.
         </p>
       </div>
     </div>

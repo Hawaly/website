@@ -17,25 +17,16 @@ export function ClientLoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/login', {
+      // Utiliser le nouvel endpoint Supabase Auth
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          username: email, 
-          password,
-          loginType: 'client' // Indiquer que c'est un login client
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
-      
-      // 🔍 DEBUG
-      console.log('🔍 ClientLoginForm - Response:', data);
-      console.log('🔍 ClientLoginForm - User:', data.user);
-      console.log('🔍 ClientLoginForm - role_code:', data.user?.role_code);
-      console.log('🔍 ClientLoginForm - client_id:', data.user?.client_id);
 
       if (response.ok && data.success) {
         // Vérifier que c'est bien un client (validation souple)
@@ -46,14 +37,12 @@ export function ClientLoginForm() {
         }
 
         // Forcer un refresh de la page pour recharger la session
-        // Note: La vérification du client_id se fait dans /client-portal page
         window.location.href = '/client-portal';
       } else {
         setError(data.error || 'Identifiants incorrects');
         setIsLoading(false);
       }
-    } catch (err) {
-      console.error('Erreur login:', err);
+    } catch {
       setError('Une erreur est survenue lors de la connexion');
       setIsLoading(false);
     }
@@ -155,7 +144,7 @@ export function ClientLoginForm() {
         {/* Footer */}
         <div className="mt-6 text-center">
           <p className="text-white/90 text-sm">
-            © {new Date().getFullYear()} Your Story - Espace Client Sécurisé
+            © {new Date().getFullYear()} urstory.ch - Espace Client Sécurisé
           </p>
         </div>
       </div>

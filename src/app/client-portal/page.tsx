@@ -7,10 +7,6 @@ import { Loader2 } from 'lucide-react';
 export default function ClientPortalPage() {
   const { user, isLoading } = useRequireClient();
 
-  // 🔍 DEBUG: Voir ce qui arrive
-  console.log('🔍 ClientPortalPage - User:', user);
-  console.log('🔍 ClientPortalPage - client_id:', user?.client_id);
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">

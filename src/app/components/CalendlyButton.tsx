@@ -22,9 +22,7 @@ export default function CalendlyButton({ children, className = '', onClick }: Ca
     // S'assurer que Calendly est chargé
     const script = document.querySelector('script[src*="calendly.com"]');
     if (script) {
-      script.addEventListener('load', () => {
-        console.log('Calendly loaded');
-      });
+      script.addEventListener('load', () => {});
     }
   }, []);
 
@@ -36,7 +34,6 @@ export default function CalendlyButton({ children, className = '', onClick }: Ca
         url: 'https://calendly.com/ur-story-ch' 
       });
     } else {
-      console.error('Calendly is not loaded yet');
       // Fallback : ouvrir dans un nouvel onglet
       window.open('https://calendly.com/ur-story-ch', '_blank');
     }

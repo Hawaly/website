@@ -118,7 +118,7 @@ export function SimpleClientLoginForm() {
         {/* Footer */}
         <div className="mt-6 text-center">
           <p className="text-white/90 text-sm">
-            © {new Date().getFullYear()} Your Story - Espace Client Sécurisé
+            © {new Date().getFullYear()} urstory.ch - Espace Client Sécurisé
           </p>
         </div>
       </div>

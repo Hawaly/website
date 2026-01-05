@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   /**
-   * Vérifier si une session existe (via cookie HTTP-only)
+   * Vérifier si une session Supabase Auth existe
    */
   const checkSession = async () => {
     try {
@@ -55,41 +55,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (response.ok) {
         const data = await response.json();
-        console.log('🔍 checkSession - Data reçue:', data);
-        console.log('🔍 checkSession - User:', data.user);
-        console.log('🔍 checkSession - client_id:', data.user?.client_id);
-        
         if (data.user) {
           setUser(data.user);
+        } else {
+          setUser(null);
         }
       } else {
-        console.log('❌ checkSession - Response not OK:', response.status);
+        setUser(null);
       }
-    } catch (error) {
-      console.error('❌ Erreur vérification session:', error);
+    } catch {
+      setUser(null);
     } finally {
       setIsLoading(false);
     }
   };
 
   /**
-   * Login utilisateur
+   * Login utilisateur via Supabase Auth
    */
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const response = await fetch('/api/login', {
+      // Utiliser le nouvel endpoint Supabase Auth
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: email, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
-      
-      console.log('🔍 login - Response data:', data);
-      console.log('🔍 login - User:', data.user);
-      console.log('🔍 login - client_id:', data.user?.client_id);
 
       if (response.ok && data.success) {
         setUser(data.user);
@@ -106,8 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         success: false, 
         error: data.error || 'Erreur de connexion' 
       };
-    } catch (error) {
-      console.error('Erreur login:', error);
+    } catch {
       return {
         success: false,
         error: 'Erreur lors de la connexion'
@@ -116,26 +110,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   /**
-   * Logout utilisateur
+   * Logout utilisateur via Supabase Auth
    */
   const logout = async () => {
     try {
-      const response = await fetch('/api/logout', {
+      const response = await fetch('/api/auth/logout', {
         method: 'POST',
       });
 
       if (response.ok) {
-        // Supprimer le cookie côté client aussi (double sécurité)
-        document.cookie = 'session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        
         setUser(null);
         // Rediriger avec window.location pour forcer un refresh complet
         window.location.href = '/login';
-      } else {
-        console.error('Erreur lors de la déconnexion');
       }
-    } catch (error) {
-      console.error('Erreur logout:', error);
+    } catch {
       // Même en cas d'erreur, on redirige vers login
       window.location.href = '/login';
     }

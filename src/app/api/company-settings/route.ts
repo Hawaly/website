@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { requireRole } from '@/lib/authz';
-import { clearCompanySettingsCache } from '@/lib/companySettings';
 
 /**
  * GET /api/company-settings
@@ -120,9 +119,6 @@ export async function PUT(request: NextRequest) {
       }
       result = data;
     }
-
-    // Invalider le cache
-    clearCompanySettingsCache();
 
     return NextResponse.json({
       success: true,

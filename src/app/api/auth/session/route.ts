@@ -38,7 +38,6 @@ export async function GET() {
       .single();
 
     if (error || !userData) {
-      console.error('❌ Erreur récupération user:', error);
       return NextResponse.json({ user: null }, { status: 401 });
     }
 
@@ -47,15 +46,6 @@ export async function GET() {
     type ClientData = { id?: number; name?: string; company_name?: string } | null;
     const role = userData.role as RoleData;
     const client = userData.client as ClientData;
-
-    // 🔍 DEBUG: Voir ce qui est retourné
-    console.log('✅ User data récupéré:', {
-      id: userData.id,
-      email: userData.email,
-      client_id: userData.client_id,
-      role_id: role?.id,
-      role_code: role?.code
-    });
 
     return NextResponse.json({
       user: {
@@ -69,8 +59,7 @@ export async function GET() {
         auth_user_id: session.user.id,
       },
     });
-  } catch (error) {
-    console.error('Erreur session:', error);
+  } catch {
     return NextResponse.json({ user: null }, { status: 500 });
   }
 }

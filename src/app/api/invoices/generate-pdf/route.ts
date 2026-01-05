@@ -70,12 +70,8 @@ export async function POST(request: NextRequest) {
       companySettings,
     });
 
-    // Sauvegarder le PDF (local en dev, Supabase en prod)
-    console.log('[PDF Generation] Saving PDF for:', invoice.invoice_number);
-    
+    // Sauvegarder le PDF
     const storagePath = await saveInvoice(invoice.invoice_number, pdfBytes);
-    
-    console.log('[PDF Generation] Saved to:', storagePath);
 
     // Mettre à jour la facture avec le chemin du PDF
     const { error: updateError } = await supabaseAdmin
@@ -95,7 +91,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error: unknown) {
     const err = error as Error;
-    console.error('Erreur génération PDF facture:', err);
     return NextResponse.json(
       { error: err.message || 'Erreur lors de la génération du PDF' },
       { status: 500 }

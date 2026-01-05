@@ -1,55 +1,22 @@
-import { supabase } from './supabaseClient';
+import { supabaseAdmin } from './supabaseAdmin';
 import { CompanySettings } from '@/types/database';
-
-// Cache en mémoire pour éviter de requêter à chaque fois
-let cachedSettings: CompanySettings | null = null;
 
 /**
  * Récupère les paramètres de l'agence depuis la base de données
- * Utilise un cache pour éviter les requêtes répétées
+ * Utilise supabaseAdmin pour bypasser RLS
  */
 export async function getCompanySettings(): Promise<CompanySettings> {
-  // Retourner le cache si disponible
-  if (cachedSettings) {
-    return cachedSettings;
-  }
-
-  // Récupérer depuis la DB
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('company_settings')
     .select('*')
     .limit(1)
     .single();
 
   if (error || !data) {
-    // Valeurs par défaut si erreur
-    console.warn('Impossible de récupérer company_settings, utilisation des valeurs par défaut');
-    return {
-      id: 1,
-      agency_name: 'YourStory Agency',
-      address: 'Rue de la Paix 15',
-      zip_code: '2000',
-      city: 'Neuchâtel',
-      country: 'Suisse',
-      phone: '078 202 33 09',
-      email: 'contact@yourstory.ch',
-      tva_number: null,
-      represented_by: 'Mohamad Hawaley',
-      iban: 'CH00 0000 0000 0000 0000 0',
-      qr_iban: 'CH44 3199 9123 0008 8901 2',
-    };
+    throw new Error(`Impossible de récupérer company_settings: ${error?.message || 'No data'}`);
   }
 
-  // Mettre en cache
-  cachedSettings = data as CompanySettings;
-  return cachedSettings;
-}
-
-/**
- * Invalide le cache (à appeler après modification des settings)
- */
-export function clearCompanySettingsCache() {
-  cachedSettings = null;
+  return data as CompanySettings;
 }
 
 /**
