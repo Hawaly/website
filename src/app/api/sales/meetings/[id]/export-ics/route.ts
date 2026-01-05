@@ -3,13 +3,14 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { data: meeting, error } = await supabaseAdmin
       .from("meetings")
       .select("*")
-      .eq("id", params.id)
+      .eq("id", id)
       .single();
 
     if (error || !meeting) {
@@ -24,7 +25,7 @@ export async function GET(
     return new NextResponse(icsContent, {
       headers: {
         "Content-Type": "text/calendar; charset=utf-8",
-        "Content-Disposition": `attachment; filename="meeting-${params.id}.ics"`,
+        "Content-Disposition": `attachment; filename="meeting-${id}.ics"`,
       },
     });
   } catch (error) {

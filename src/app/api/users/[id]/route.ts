@@ -3,10 +3,11 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const userId = parseInt(params.id);
+    const { id } = await params;
+    const userId = parseInt(id);
     const body = await request.json();
     const { email, role_id, client_id, is_active } = body;
 
@@ -99,10 +100,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const userId = parseInt(params.id);
+    const { id } = await params;
+    const userId = parseInt(id);
 
     // 1. Get user's auth_user_id
     const { data: user, error: fetchError } = await supabaseAdmin
