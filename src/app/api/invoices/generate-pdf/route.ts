@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { generateInvoicePDF } from '@/lib/invoicePdfGenerator';
 import { getCompanySettings } from '@/lib/companySettings';
 import { saveInvoice } from '@/lib/storageHelpers';
 import { Client, Mandat, Invoice, InvoiceItem } from '@/types/database';
+import { requireSession, loadInvoiceOr403 } from '@/lib/authz';
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérifier l'authentification
+    const session = await requireSession(request);
+    if (session instanceof NextResponse) return session;
+
     const body = await request.json();
     const { invoice_id } = body;
 
@@ -17,8 +22,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Récupérer la facture avec ses relations
-    const { data: invoice, error: invoiceError } = await supabase
+    // Charger facture avec vérification ownership (admin ou owner)
+    const invoiceCheck = await loadInvoiceOr403(invoice_id, session);
+    if (invoiceCheck instanceof NextResponse) return invoiceCheck;
+
+    // Récupérer la facture avec ses relations pour la génération PDF
+    const { data: invoice, error: invoiceError } = await supabaseAdmin
       .from('invoice')
       .select(`
         *,
@@ -36,7 +45,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Récupérer les lignes
-    const { data: items, error: itemsError } = await supabase
+    const { data: items, error: itemsError } = await supabaseAdmin
       .from('invoice_item')
       .select('*')
       .eq('invoice_id', invoice_id)
@@ -69,7 +78,7 @@ export async function POST(request: NextRequest) {
     console.log('[PDF Generation] Saved to:', storagePath);
 
     // Mettre à jour la facture avec le chemin du PDF
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from('invoice')
       .update({ pdf_path: storagePath })
       .eq('id', invoice_id);

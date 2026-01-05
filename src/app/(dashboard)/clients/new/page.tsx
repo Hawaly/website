@@ -7,14 +7,14 @@ export default function NewClientPage() {
   return (
     <>
       <Header title="Nouveau client" />
-      <main className="p-4 sm:p-6 lg:p-8">
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8">
         {/* Breadcrumb */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Link
             href="/clients"
-            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+            className="inline-flex items-center text-xs sm:text-sm text-gray-600 hover:text-gray-900 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
             Retour à la liste des clients
           </Link>
         </div>

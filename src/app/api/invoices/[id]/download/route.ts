@@ -1,23 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
 import { getDownloadUrl } from '@/lib/storageHelpers';
+import { requireSession, loadInvoiceOr403 } from '@/lib/authz';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Vérifier l'authentification
+    const session = await requireSession(request);
+    if (session instanceof NextResponse) return session;
+
     const { id: invoiceId } = await params;
 
-    const { data: invoice, error: invoiceError } = await supabase
-      .from('invoice')
-      .select('*')
-      .eq('id', invoiceId)
-      .single();
+    // Charger facture avec vérification ownership
+    const invoice = await loadInvoiceOr403(invoiceId, session);
+    if (invoice instanceof NextResponse) return invoice;
 
-    if (invoiceError || !invoice || !invoice.pdf_path) {
+    if (!invoice.pdf_path) {
       return NextResponse.json(
-        { error: 'Facture ou PDF non trouvé' },
+        { error: 'PDF non trouvé pour cette facture' },
         { status: 404 }
       );
     }

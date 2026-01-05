@@ -575,3 +575,70 @@ export interface VideoScript {
 export type VideoScriptInsert = Omit<VideoScript, 'id' | 'created_at' | 'updated_at'>;
 export type VideoScriptUpdate = Partial<Omit<VideoScript, 'id' | 'created_at' | 'updated_at'>>;
 
+// =========================================================
+// CLIENT KPI TRACKING
+// =========================================================
+
+export type ClientKPICategorie = 'social_media' | 'website' | 'sales' | 'engagement' | 'autre';
+export type ClientKPIPeriodicite = 'hebdomadaire' | 'mensuel' | 'trimestriel' | 'annuel';
+
+// Interface ClientKPI
+export interface ClientKPI {
+  id: number;
+  client_id: number;
+  nom: string;
+  description: string | null;
+  categorie: ClientKPICategorie | null;
+  unite: string | null;
+  valeur_cible: number | null;
+  periodicite: ClientKPIPeriodicite | null;
+  ordre: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+// Interface ClientKPIValue
+export interface ClientKPIValue {
+  id: number;
+  kpi_id: number;
+  date: string;
+  valeur_mesuree: number;
+  commentaire: string | null;
+  created_at: string;
+  created_by: string | null;
+}
+
+// Types pour insertion
+export type ClientKPIInsert = Omit<ClientKPI, 'id' | 'created_at' | 'updated_at'>;
+export type ClientKPIUpdate = Partial<Omit<ClientKPI, 'id' | 'client_id' | 'created_at' | 'updated_at'>>;
+
+export type ClientKPIValueInsert = Omit<ClientKPIValue, 'id' | 'created_at'>;
+export type ClientKPIValueUpdate = Partial<Omit<ClientKPIValue, 'id' | 'kpi_id' | 'created_at'>>;
+
+// Labels pour les catégories de KPI
+export const CLIENT_KPI_CATEGORIE_LABELS: Record<ClientKPICategorie, string> = {
+  social_media: 'Réseaux Sociaux',
+  website: 'Site Web',
+  sales: 'Ventes',
+  engagement: 'Engagement',
+  autre: 'Autre',
+};
+
+// Couleurs pour les catégories de KPI
+export const CLIENT_KPI_CATEGORIE_COLORS: Record<ClientKPICategorie, string> = {
+  social_media: 'bg-blue-100 text-blue-700',
+  website: 'bg-purple-100 text-purple-700',
+  sales: 'bg-green-100 text-green-700',
+  engagement: 'bg-orange-100 text-orange-700',
+  autre: 'bg-gray-100 text-gray-700',
+};
+
+// Labels pour les périodicités
+export const CLIENT_KPI_PERIODICITE_LABELS: Record<ClientKPIPeriodicite, string> = {
+  hebdomadaire: 'Hebdomadaire',
+  mensuel: 'Mensuel',
+  trimestriel: 'Trimestriel',
+  annuel: 'Annuel',
+};
+

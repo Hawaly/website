@@ -245,7 +245,7 @@ export function ClientDashboard({ clientId }: ClientDashboardProps) {
           </Link>
 
           <Link
-            href={`/mandats/new?client=${clientId}`}
+            href={`/mandats/new?client_id=${clientId}`}
             className="flex items-center gap-3 p-4 bg-white rounded-xl hover:shadow-md transition-shadow border-2 border-gray-200 hover:border-blue-500"
           >
             <div className="p-2 bg-blue-100 rounded-lg">

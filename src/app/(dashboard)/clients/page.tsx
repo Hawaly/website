@@ -87,19 +87,19 @@ export default function ClientsPage() {
   return (
     <>
       <Header title="Clients" subtitle="Gérez vos clients et leurs informations" />
-      <main className="p-4 sm:p-6 lg:p-8 animate-fade-in">
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8 animate-fade-in">
         {/* Action Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+              <Users className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6 text-white" />
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-slate-900">
-                {clients.length} <span className="text-sm sm:text-base font-normal text-slate-500">client(s)</span>
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900">
+                {clients.length} <span className="text-xs sm:text-sm md:text-base font-normal text-slate-500">client(s)</span>
               </p>
               {filteredClients.length !== clients.length && (
-                <p className="text-sm text-slate-500">
+                <p className="text-xs sm:text-sm text-slate-500">
                   {filteredClients.length} affiché(s)
                 </p>
               )}
@@ -107,7 +107,7 @@ export default function ClientsPage() {
           </div>
           <Link
             href="/clients/new"
-            className="btn btn-primary px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base w-full sm:w-auto justify-center"
+            className="btn btn-primary px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 text-xs sm:text-sm md:text-base w-full sm:w-auto justify-center"
           >
             <Plus className="w-4 h-4" />
             <span>Nouveau client</span>
@@ -115,12 +115,12 @@ export default function ClientsPage() {
         </div>
 
         {/* Barre de recherche et filtres */}
-        <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-5 mb-6">
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <div className="bg-white rounded-lg sm:rounded-xl md:rounded-2xl border border-slate-200/60 shadow-sm p-3 sm:p-4 md:p-5 mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3 md:mb-4">
             <Filter className="w-4 h-4 text-slate-400" />
             <span className="text-sm font-medium text-slate-600">Filtres</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
             {/* Recherche */}
             <div className="md:col-span-2">
               <div className="relative group">
@@ -209,7 +209,7 @@ export default function ClientsPage() {
         ) : (
           <>
             {/* Vue mobile - Cartes */}
-            <div className="lg:hidden space-y-3">
+            <div className="lg:hidden space-y-2 sm:space-y-3">
               {filteredClients.map((client, index) => (
                 <motion.div
                   key={client.id}
@@ -220,14 +220,14 @@ export default function ClientsPage() {
                 >
                   <Link
                     href={`/clients/${client.id}`}
-                    className="block bg-white rounded-xl border border-slate-200/60 shadow-sm p-4 hover:shadow-lg hover:border-orange-200 transition-all"
+                    className="block bg-white rounded-lg sm:rounded-xl border border-slate-200/60 shadow-sm p-3 sm:p-4 hover:shadow-lg hover:border-orange-200 transition-all"
                   >
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-orange-600 font-bold text-sm flex-shrink-0">
+                    <div className="flex items-start gap-2 sm:gap-3 mb-2 sm:mb-3">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-orange-600 font-bold text-xs sm:text-sm flex-shrink-0">
                         {client.name.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="font-semibold text-slate-900 truncate">{client.name}</div>
+                        <div className="font-semibold text-sm sm:text-base text-slate-900 truncate">{client.name}</div>
                         {client.company_name && (
                           <div className="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
                             <Building2 className="w-3 h-3" />
@@ -236,11 +236,11 @@ export default function ClientsPage() {
                         )}
                       </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                      <span className={`badge text-xs ${client.type === 'mensuel' ? 'badge-purple' : 'badge-info'}`}>
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                      <span className={`badge text-[10px] sm:text-xs ${client.type === 'mensuel' ? 'badge-purple' : 'badge-info'}`}>
                         {CLIENT_TYPE_LABELS[client.type]}
                       </span>
-                      <span className={`badge text-xs ${client.status === 'actif' ? 'badge-success' :
+                      <span className={`badge text-[10px] sm:text-xs ${client.status === 'actif' ? 'badge-success' :
                         client.status === 'potentiel' ? 'badge-warning' :
                           client.status === 'pause' ? 'badge-slate' :
                             'badge-danger'
@@ -249,7 +249,7 @@ export default function ClientsPage() {
                       </span>
                     </div>
                     {(client.email || client.phone) && (
-                      <div className="flex flex-wrap gap-3 text-xs text-slate-500">
+                      <div className="flex flex-wrap gap-2 sm:gap-3 text-[11px] sm:text-xs text-slate-500">
                         {client.email && (
                           <div className="flex items-center gap-1">
                             <Mail className="w-3 h-3" />
@@ -270,7 +270,7 @@ export default function ClientsPage() {
             </div>
 
             {/* Vue desktop - Tableau */}
-            <div className="hidden lg:block bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+            <div className="hidden lg:block bg-white rounded-xl lg:rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
               <table className="table-modern">
                 <thead>
                   <tr>

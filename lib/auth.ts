@@ -25,6 +25,7 @@ export interface SessionData {
   username: string;
   role?: string; // Role code de l'utilisateur (admin, client, staff)
   roleId?: number; // Role ID (1 = admin, 2 = client, 3 = staff)
+  clientId?: number; // Client ID pour isolation tenant (null pour admins)
 }
 
 /**

@@ -141,7 +141,7 @@ export default function DashboardPage() {
   return (
     <>
       <Header title="Dashboard" subtitle="Vue d'ensemble de votre activité" />
-      <main className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 animate-fade-in">
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8 space-y-4 sm:space-y-6 md:space-y-8 animate-fade-in">
         {/* Sélecteur de période */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
@@ -191,23 +191,23 @@ export default function DashboardPage() {
               whileHover={{ y: -5, scale: 1.02 }}
               className="stat-card group"
             >
-              <div className="absolute top-0 right-0 w-16 sm:w-24 h-16 sm:h-24 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute top-0 right-0 w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="relative">
-                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
                   <span className="text-xs sm:text-sm font-medium text-slate-600">CA (Payé)</span>
-                  <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform">
-                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                  <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform">
+                    <TrendingUp className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 text-white" />
                   </div>
                 </div>
-                <div className="text-xl sm:text-3xl font-bold text-slate-900 tracking-tight truncate">
+                <div className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight truncate">
                   {formatAmount(monthKPIs.revenue)}
                 </div>
-                <div className="flex items-center gap-1.5 mt-2 sm:mt-3">
-                  <div className="badge badge-success">
-                    <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                    <span className="text-xs font-semibold">{monthKPIs.invoiceCount}</span>
+                <div className="flex items-center gap-1 sm:gap-1.5 mt-2 sm:mt-3">
+                  <div className="badge badge-success text-[10px] sm:text-xs">
+                    <ArrowUpRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
+                    <span className="font-semibold">{monthKPIs.invoiceCount}</span>
                   </div>
-                  <span className="text-xs text-slate-500 hidden sm:inline">facture(s)</span>
+                  <span className="text-[10px] sm:text-xs text-slate-500 hidden sm:inline">facture(s)</span>
                 </div>
               </div>
             </motion.div>
@@ -220,23 +220,23 @@ export default function DashboardPage() {
               whileHover={{ y: -5, scale: 1.02 }}
               className="stat-card group"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-rose-500/10 to-pink-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute top-0 right-0 w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 bg-gradient-to-br from-rose-500/10 to-pink-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-slate-600">Dépenses</span>
-                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 shadow-lg shadow-rose-500/20 group-hover:scale-110 transition-transform">
-                    <TrendingDown className="w-5 h-5 text-white" />
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <span className="text-xs sm:text-sm font-medium text-slate-600">Dépenses</span>
+                  <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 shadow-lg shadow-rose-500/20 group-hover:scale-110 transition-transform">
+                    <TrendingDown className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 text-white" />
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-slate-900 tracking-tight">
+                <div className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight truncate">
                   {formatAmount(monthKPIs.expenses)}
                 </div>
-                <div className="flex items-center gap-1.5 mt-3">
-                  <div className="badge badge-danger">
-                    <ArrowDownRight className="w-3.5 h-3.5" />
-                    <span className="text-xs font-semibold">{monthKPIs.expenseCount}</span>
+                <div className="flex items-center gap-1 sm:gap-1.5 mt-2 sm:mt-3">
+                  <div className="badge badge-danger text-[10px] sm:text-xs">
+                    <ArrowDownRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
+                    <span className="font-semibold">{monthKPIs.expenseCount}</span>
                   </div>
-                  <span className="text-xs text-slate-500">dépense(s)</span>
+                  <span className="text-[10px] sm:text-xs text-slate-500 hidden sm:inline">dépense(s)</span>
                 </div>
               </div>
             </motion.div>
@@ -249,23 +249,19 @@ export default function DashboardPage() {
               whileHover={{ y: -5, scale: 1.02 }}
               className="stat-card group"
             >
-              <div className={`absolute top-0 right-0 w-24 h-24 rounded-full -translate-y-1/2 translate-x-1/2 ${monthKPIs.profit >= 0 ? 'bg-gradient-to-br from-indigo-500/10 to-purple-500/10' : 'bg-gradient-to-br from-amber-500/10 to-orange-500/10'
-                }`} />
+              <div className={`absolute top-0 right-0 w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 rounded-full -translate-y-1/2 translate-x-1/2 ${monthKPIs.profit >= 0 ? 'bg-gradient-to-br from-indigo-500/10 to-purple-500/10' : 'bg-gradient-to-br from-amber-500/10 to-orange-500/10'}`}/>
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-slate-600">Bénéfice</span>
-                  <div className={`flex items-center justify-center w-10 h-10 rounded-xl shadow-lg group-hover:scale-110 transition-transform ${monthKPIs.profit >= 0
-                    ? 'bg-gradient-to-br from-indigo-500 to-purple-500 shadow-indigo-500/20'
-                    : 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-amber-500/20'
-                    }`}>
-                    <Wallet className="w-5 h-5 text-white" />
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <span className="text-xs sm:text-sm font-medium text-slate-600">Bénéfice</span>
+                  <div className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-lg sm:rounded-xl shadow-lg shadow-${monthKPIs.profit >= 0 ? 'indigo-500/20' : 'amber-500/20'} group-hover:scale-110 transition-transform ${monthKPIs.profit >= 0 ? 'bg-gradient-to-br from-indigo-500 to-purple-500' : 'bg-gradient-to-br from-amber-500 to-orange-500'}`}>
+                    <Wallet className={`w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 text-white`} />
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-slate-900 tracking-tight">
+                <div className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight truncate">
                   {formatAmount(monthKPIs.profit)}
                 </div>
-                <div className="flex items-center gap-1.5 mt-3">
-                  <span className={`badge ${monthKPIs.profit >= 0 ? 'badge-info' : 'badge-warning'}`}>
+                <div className="flex items-center gap-1 sm:gap-1.5 mt-2 sm:mt-3">
+                  <span className={`badge ${monthKPIs.profit >= 0 ? 'badge-info' : 'badge-warning'} text-[10px] sm:text-xs`}>
                     {monthKPIs.profit >= 0 ? 'Positif' : 'Négatif'}
                   </span>
                 </div>
@@ -280,21 +276,21 @@ export default function DashboardPage() {
               whileHover={{ y: -5, scale: 1.02 }}
               className="stat-card group"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute top-0 right-0 w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-slate-600">Marge</span>
-                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 shadow-lg shadow-violet-500/20 group-hover:scale-110 transition-transform">
-                    <PieChart className="w-5 h-5 text-white" />
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <span className="text-xs sm:text-sm font-medium text-slate-600">Marge</span>
+                  <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 shadow-lg shadow-violet-500/20 group-hover:scale-110 transition-transform">
+                    <PieChart className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 text-white" />
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-slate-900 tracking-tight">
+                <div className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight truncate">
                   {monthKPIs.revenue > 0
                     ? ((monthKPIs.profit / monthKPIs.revenue) * 100).toFixed(1)
                     : '0.0'}%
                 </div>
-                <div className="flex items-center gap-1.5 mt-3">
-                  <span className="badge badge-purple">
+                <div className="flex items-center gap-1 sm:gap-1.5 mt-2 sm:mt-3">
+                  <span className="badge badge-purple text-[10px] sm:text-xs">
                     Rentabilité
                   </span>
                 </div>
@@ -304,7 +300,7 @@ export default function DashboardPage() {
         </div>
 
         {/* KPIs de l'année */}
-        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl">
+        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-xl">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
@@ -316,8 +312,8 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/10 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-2 mb-3">
                 <TrendingUp className="w-4 h-4 text-emerald-400" />
                 <span className="text-sm font-medium text-slate-300">CA Total</span>
@@ -327,7 +323,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/10 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-2 mb-3">
                 <TrendingDown className="w-4 h-4 text-rose-400" />
                 <span className="text-sm font-medium text-slate-300">Dépenses</span>
@@ -337,7 +333,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/10 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-2 mb-3">
                 <Wallet className={`w-4 h-4 ${yearKPIs.profit >= 0 ? 'text-indigo-400' : 'text-amber-400'}`} />
                 <span className="text-sm font-medium text-slate-300">Bénéfice</span>
@@ -349,7 +345,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
           {/* Top clients */}
           <div className="card">
             <div className="p-6">
@@ -464,7 +460,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Actions rapides */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 rounded-2xl shadow-xl p-8">
+        <div className="relative overflow-hidden bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
           {/* Background decoration */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
@@ -480,45 +476,45 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
               <Link
                 href="/factures/new"
-                className="group flex flex-col items-center gap-3 p-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/30 transition-all duration-200"
+                className="group flex flex-col items-center gap-2 sm:gap-2.5 md:gap-3 p-3 sm:p-4 md:p-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 hover:border-white/30 transition-all duration-200"
               >
-                <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center transition-colors group-hover:scale-110 duration-200">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center transition-colors group-hover:scale-110 duration-200">
                   <FileText className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm font-semibold text-white text-center">Nouvelle facture</span>
+                <span className="text-xs sm:text-sm font-semibold text-white text-center">Nouvelle facture</span>
               </Link>
 
               <Link
                 href="/depenses/new"
-                className="group flex flex-col items-center gap-3 p-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/30 transition-all duration-200"
+                className="group flex flex-col items-center gap-2 sm:gap-2.5 md:gap-3 p-3 sm:p-4 md:p-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 hover:border-white/30 transition-all duration-200"
               >
-                <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center transition-colors group-hover:scale-110 duration-200">
-                  <TrendingDown className="w-6 h-6 text-white" />
+                <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center transition-colors group-hover:scale-110 duration-200">
+                  <TrendingDown className="w-5 h-5 md:w-6 md:h-6 text-white" />
                 </div>
-                <span className="text-sm font-semibold text-white text-center">Nouvelle dépense</span>
+                <span className="text-xs sm:text-sm font-semibold text-white text-center">Nouvelle dépense</span>
               </Link>
 
               <Link
                 href="/clients"
-                className="group flex flex-col items-center gap-3 p-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/30 transition-all duration-200"
+                className="group flex flex-col items-center gap-2 sm:gap-2.5 md:gap-3 p-3 sm:p-4 md:p-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 hover:border-white/30 transition-all duration-200"
               >
-                <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center transition-colors group-hover:scale-110 duration-200">
-                  <Users className="w-6 h-6 text-white" />
+                <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center transition-colors group-hover:scale-110 duration-200">
+                  <Users className="w-5 h-5 md:w-6 md:h-6 text-white" />
                 </div>
-                <span className="text-sm font-semibold text-white text-center">Voir clients</span>
+                <span className="text-xs sm:text-sm font-semibold text-white text-center">Voir clients</span>
               </Link>
 
               <Link
                 href="/factures"
-                className="group flex flex-col items-center gap-3 p-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/30 transition-all duration-200"
+                className="group flex flex-col items-center gap-2 sm:gap-2.5 md:gap-3 p-3 sm:p-4 md:p-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 hover:border-white/30 transition-all duration-200"
               >
-                <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center transition-colors group-hover:scale-110 duration-200">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center transition-colors group-hover:scale-110 duration-200">
                   <FileText className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm font-semibold text-white text-center">Toutes factures</span>
+                <span className="text-xs sm:text-sm font-semibold text-white text-center">Toutes factures</span>
               </Link>
             </div>
           </div>

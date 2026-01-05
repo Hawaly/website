@@ -36,7 +36,11 @@ export default function MobileMenu({ navLinks }: MobileMenuProps) {
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
         aria-expanded={isOpen}
-        className="grid h-11 w-11 place-items-center rounded-xl border-2 border-white/60 bg-white/60 backdrop-blur-xl text-gray-800 transition-all duration-200 active:scale-90 active:bg-white/80 shadow-md z-50"
+        className={`grid h-11 w-11 place-items-center rounded-xl border-2 transition-all duration-200 active:scale-90 shadow-md z-50 ${
+          isOpen 
+            ? 'border-white bg-white text-gray-800' 
+            : 'border-white/60 bg-white/60 backdrop-blur-xl text-gray-800 active:bg-white/80'
+        }`}
       >
         <div className="relative w-5 h-5 flex flex-col items-center justify-center">
           {/* Ligne du haut */}
@@ -77,7 +81,11 @@ export default function MobileMenu({ navLinks }: MobileMenuProps) {
             : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
-        <div className="mx-auto max-w-md rounded-2xl border-2 border-white/60 bg-white/98 backdrop-blur-2xl shadow-2xl overflow-hidden">
+        <div className={`mx-auto max-w-md rounded-2xl border-2 shadow-2xl overflow-hidden ${
+          isOpen 
+            ? 'border-white bg-white backdrop-blur-2xl' 
+            : 'border-white/60 bg-white/60 backdrop-blur-2xl'
+        }`}>
           {/* Navigation Links - meilleur espacement et touch targets */}
           <nav className="p-3" aria-label="Menu mobile">
             <div className="space-y-0.5">

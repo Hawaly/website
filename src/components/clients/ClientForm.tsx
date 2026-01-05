@@ -101,7 +101,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
       {/* Message d'erreur */}
       {error && (
         <div className="bg-red-50 border-2 border-red-300 rounded-lg p-4">
@@ -110,14 +110,14 @@ export function ClientForm({ client, mode }: ClientFormProps) {
       )}
 
       {/* Section informations de base */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-md p-3 sm:p-4 md:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
           Informations de base
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
           {/* Nom */}
           <div className="md:col-span-2">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="name" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Nom du client <span className="text-red-500">*</span>
             </label>
             <input
@@ -125,7 +125,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
               id="name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="Ex: Jean Dupont"
               required
               disabled={isLoading}
@@ -134,7 +134,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
 
           {/* Entreprise */}
           <div className="md:col-span-2">
-            <label htmlFor="company_name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="company_name" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Nom de l&apos;entreprise
             </label>
             <input
@@ -142,7 +142,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
               id="company_name"
               value={formData.company_name}
               onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="Ex: Entreprise SA"
               disabled={isLoading}
             />
@@ -150,14 +150,14 @@ export function ClientForm({ client, mode }: ClientFormProps) {
 
           {/* Type */}
           <div>
-            <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="type" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Type <span className="text-red-500">*</span>
             </label>
             <select
               id="type"
               value={formData.type}
               onChange={(e) => setFormData({ ...formData, type: e.target.value as ClientType })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               required
               disabled={isLoading}
             >
@@ -168,14 +168,14 @@ export function ClientForm({ client, mode }: ClientFormProps) {
 
           {/* Statut */}
           <div>
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="status" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Statut <span className="text-red-500">*</span>
             </label>
             <select
               id="status"
               value={formData.status}
               onChange={(e) => setFormData({ ...formData, status: e.target.value as ClientStatus })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               required
               disabled={isLoading}
             >
@@ -189,14 +189,14 @@ export function ClientForm({ client, mode }: ClientFormProps) {
       </div>
 
       {/* Section adresse */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-md p-3 sm:p-4 md:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
           Adresse
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {/* Adresse */}
           <div className="md:col-span-3">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="address" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Adresse complète
             </label>
             <input
@@ -204,7 +204,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
               id="address"
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="Rue de la Paix 15"
               disabled={isLoading}
             />
@@ -212,7 +212,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
 
           {/* Code postal */}
           <div>
-            <label htmlFor="zip_code" className="block text-sm font-bold text-gray-900 mb-2">
+            <label htmlFor="zip_code" className="block text-xs sm:text-sm font-bold text-gray-900 mb-1.5 sm:mb-2">
               Code postal
             </label>
             <input
@@ -220,7 +220,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
               id="zip_code"
               value={formData.zip_code}
               onChange={(e) => setFormData({ ...formData, zip_code: e.target.value })}
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 font-medium"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 text-gray-900 font-medium"
               placeholder="2000"
               disabled={isLoading}
             />
@@ -228,7 +228,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
 
           {/* Localité / Ville */}
           <div className="md:col-span-3">
-            <label htmlFor="locality" className="block text-sm font-bold text-gray-900 mb-2">
+            <label htmlFor="locality" className="block text-xs sm:text-sm font-bold text-gray-900 mb-1.5 sm:mb-2">
               Localité / Ville
             </label>
             <input
@@ -236,7 +236,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
               id="locality"
               value={formData.locality}
               onChange={(e) => setFormData({ ...formData, locality: e.target.value })}
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 font-medium"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 text-gray-900 font-medium"
               placeholder="Neuchâtel"
               disabled={isLoading}
             />
@@ -244,7 +244,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
 
           {/* Représenté par */}
           <div className="md:col-span-4">
-            <label htmlFor="represented_by" className="block text-sm font-bold text-gray-900 mb-2">
+            <label htmlFor="represented_by" className="block text-xs sm:text-sm font-bold text-gray-900 mb-1.5 sm:mb-2">
               Représenté par
             </label>
             <input
@@ -252,7 +252,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
               id="represented_by"
               value={formData.represented_by}
               onChange={(e) => setFormData({ ...formData, represented_by: e.target.value })}
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 font-medium"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 text-gray-900 font-medium"
               placeholder="Nom du représentant"
               disabled={isLoading}
             />
@@ -261,14 +261,14 @@ export function ClientForm({ client, mode }: ClientFormProps) {
       </div>
 
       {/* Section contact */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-md p-3 sm:p-4 md:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
           Informations de contact
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Email
             </label>
             <input
@@ -276,7 +276,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
               id="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="exemple@email.com"
               disabled={isLoading}
             />
@@ -284,7 +284,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
 
           {/* Téléphone */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="phone" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Téléphone
             </label>
             <input
@@ -292,7 +292,7 @@ export function ClientForm({ client, mode }: ClientFormProps) {
               id="phone"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="+41 79 000 00 00"
               disabled={isLoading}
             />
@@ -301,8 +301,8 @@ export function ClientForm({ client, mode }: ClientFormProps) {
       </div>
 
       {/* Section notes */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-md p-3 sm:p-4 md:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
           Notes
         </h3>
         <textarea
@@ -310,14 +310,14 @@ export function ClientForm({ client, mode }: ClientFormProps) {
           value={formData.notes}
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
           rows={4}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
           placeholder="Notes supplémentaires..."
           disabled={isLoading}
         />
       </div>
 
       {/* Boutons d'action */}
-      <div className="flex flex-col sm:flex-row justify-end gap-3 sm:space-x-4">
+      <div className="flex flex-col sm:flex-row justify-end gap-3">
         <button
           type="button"
           onClick={handleCancel}

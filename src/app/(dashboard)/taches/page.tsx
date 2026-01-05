@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { Header } from '@/components/layout/Header';
 import { 
   ClipboardList, 
@@ -25,7 +26,12 @@ import {
   X,
   Target,
   ArrowUpDown,
-  Plus
+  Plus,
+  Timer,
+  ChevronRight,
+  Sparkles,
+  ListTodo,
+  MoreHorizontal
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { 
@@ -165,11 +171,16 @@ export default function TachesPage() {
   if (isLoading) {
     return (
       <>
-        <Header title="Toutes les tâches" />
-        <main className="p-4 sm:p-6 lg:p-8">
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-900 font-semibold">Chargement des tâches...</p>
+        <Header title="Tâches" />
+        <main className="p-3 sm:p-4 md:p-6 lg:p-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30 animate-pulse">
+                <ListTodo className="w-8 h-8 text-white" />
+              </div>
+              <Loader2 className="w-6 h-6 animate-spin text-blue-500 mx-auto mb-3" />
+              <p className="text-slate-600 font-medium">Chargement des tâches...</p>
+            </div>
           </div>
         </main>
       </>
@@ -179,10 +190,14 @@ export default function TachesPage() {
   if (error) {
     return (
       <>
-        <Header title="Toutes les tâches" />
-        <main className="p-4 sm:p-6 lg:p-8">
-          <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6">
-            <p className="text-red-900 font-semibold">{error}</p>
+        <Header title="Tâches" />
+        <main className="p-3 sm:p-4 md:p-6 lg:p-8">
+          <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-2xl p-6 sm:p-8 text-center max-w-md mx-auto">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-red-100 flex items-center justify-center">
+              <AlertCircle className="w-7 h-7 text-red-500" />
+            </div>
+            <h3 className="text-lg font-bold text-red-800 mb-2">Erreur de chargement</h3>
+            <p className="text-red-600 text-sm">{error}</p>
           </div>
         </main>
       </>
@@ -199,457 +214,479 @@ export default function TachesPage() {
 
   return (
     <>
-      <Header title="Travail & Tâches" />
-      <main className="p-4 sm:p-6 lg:p-8 max-w-[1800px] mx-auto">
-        {/* Résumé Dashboard */}
-        <div className="bg-gradient-to-br from-brand-orange via-brand-orange-light to-orange-400 rounded-2xl shadow-2xl p-6 sm:p-8 text-white mb-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold mb-2">Gestion des Tâches</h1>
-              <p className="text-white/90 text-lg">Vue d'ensemble de votre activité</p>
+      <Header title="Tâches" />
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto animate-fade-in">
+        {/* Hero Section compact */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white mb-4 sm:mb-6 overflow-hidden"
+        >
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
+          </div>
+          
+          <div className="relative z-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 sm:mb-6">
+              <div>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1">Gestion des Tâches</h1>
+                <p className="text-white/70 text-sm">Vue d'ensemble de votre activité</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setShowTaskModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white text-indigo-600 rounded-lg font-semibold text-sm hover:shadow-lg transition-all"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span className="hidden sm:inline">Nouvelle tâche</span>
+                  <span className="sm:hidden">Tâche</span>
+                </button>
+                <button
+                  onClick={() => setShowMandatModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg font-semibold text-sm hover:bg-white/30 transition-all"
+                >
+                  <Briefcase className="w-4 h-4" />
+                  <span className="hidden sm:inline">Nouveau mandat</span>
+                </button>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => setShowTaskModal(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-white text-brand-orange rounded-xl font-bold hover:shadow-xl transition-all"
-              >
-                <Plus className="w-5 h-5" />
-                Nouvelle tâche
-              </button>
-              <button
-                onClick={() => setShowMandatModal(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl font-bold hover:bg-white/30 transition-all border-2 border-white/40"
-              >
-                <Briefcase className="w-5 h-5" />
-                Nouveau mandat
-              </button>
+
+            {/* Stats intégrées */}
+            <div className="grid grid-cols-4 gap-2 sm:gap-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 text-center">
+                <div className="text-lg sm:text-2xl font-bold">{stats.total}</div>
+                <p className="text-[10px] sm:text-xs text-white/70">Total</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 text-center">
+                <div className="text-lg sm:text-2xl font-bold">{stats.a_faire}</div>
+                <p className="text-[10px] sm:text-xs text-white/70">À faire</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 text-center">
+                <div className="text-lg sm:text-2xl font-bold text-amber-300">{stats.en_cours}</div>
+                <p className="text-[10px] sm:text-xs text-white/70">En cours</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 text-center">
+                <div className={`text-lg sm:text-2xl font-bold ${overdueTasks.length > 0 ? 'text-red-300' : 'text-emerald-300'}`}>
+                  {overdueTasks.length > 0 ? overdueTasks.length : stats.terminee}
+                </div>
+                <p className="text-[10px] sm:text-xs text-white/70">{overdueTasks.length > 0 ? 'En retard' : 'Terminées'}</p>
+              </div>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border-2 border-white/30">
-              <div className="flex items-center justify-between mb-2">
-                <ClipboardList className="w-8 h-8 text-white/80" />
-                <div className="text-3xl font-bold">{stats.total}</div>
-              </div>
-              <p className="text-sm text-white/90 font-medium">Total tâches</p>
-            </div>
-
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border-2 border-white/30">
-              <div className="flex items-center justify-between mb-2">
-                <CheckCircle2 className="w-8 h-8 text-green-300" />
-                <div className="text-3xl font-bold">{stats.terminee}</div>
-              </div>
-              <p className="text-sm text-white/90 font-medium">Terminées</p>
-              <div className="mt-2 bg-white/20 rounded-full h-1.5">
-                <div 
-                  className="bg-green-300 h-1.5 rounded-full transition-all"
-                  style={{ width: `${tasksCompletionRate}%` }}
-                />
-              </div>
-              <p className="text-xs text-white/80 mt-1">{tasksCompletionRate}%</p>
-            </div>
-
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border-2 border-white/30">
-              <div className="flex items-center justify-between mb-2">
-                <Clock className="w-8 h-8 text-orange-300" />
-                <div className="text-3xl font-bold">{stats.en_cours}</div>
-              </div>
-              <p className="text-sm text-white/90 font-medium">En cours</p>
-            </div>
-
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border-2 border-white/30">
-              <div className="flex items-center justify-between mb-2">
-                <AlertCircle className="w-8 h-8 text-red-300" />
-                <div className="text-3xl font-bold text-red-300">{overdueTasks.length}</div>
-              </div>
-              <p className="text-sm text-white/90 font-medium">En retard</p>
-            </div>
-          </div>
-        </div>
+        </motion.div>
 
         {/* Onglets */}
-        <div className="bg-white rounded-xl shadow-md p-2 mb-6 flex gap-2">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white rounded-xl border border-slate-200/60 shadow-sm p-1.5 mb-4 sm:mb-6 flex gap-1"
+        >
           <button
             onClick={() => setActiveTab('tasks')}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-bold transition-all ${
+            className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg font-medium text-sm transition-all ${
               activeTab === 'tasks'
-                ? 'bg-gradient-to-r from-brand-orange to-brand-orange-light text-white shadow-lg'
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-50'
             }`}
           >
-            <ClipboardList className="w-5 h-5" />
-            <span>Tâches des Mandats</span>
-            <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-              activeTab === 'tasks' ? 'bg-white/20' : 'bg-gray-200'
+            <ListTodo className="w-4 h-4" />
+            <span className="hidden sm:inline">Tâches</span>
+            <span className={`px-1.5 py-0.5 rounded text-xs ${
+              activeTab === 'tasks' ? 'bg-white/20' : 'bg-slate-100'
             }`}>
               {stats.total}
             </span>
           </button>
           <button
             onClick={() => setActiveTab('calendar')}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-bold transition-all ${
+            className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg font-medium text-sm transition-all ${
               activeTab === 'calendar'
-                ? 'bg-gradient-to-r from-brand-orange to-brand-orange-light text-white shadow-lg'
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-50'
             }`}
           >
-            <CalendarDays className="w-5 h-5" />
-            <span>Calendrier Éditorial</span>
+            <CalendarDays className="w-4 h-4" />
+            <span className="hidden sm:inline">Calendrier</span>
           </button>
-        </div>
+        </motion.div>
 
         {activeTab === 'tasks' && (
           <>
-            {/* Statistiques */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-md p-4 border-l-4 border-gray-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-              </div>
-              <ClipboardList className="w-8 h-8 text-gray-500" />
-            </div>
-          </div>
+            {/* Barre de recherche et contrôles */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-xl border border-slate-200/60 shadow-sm p-3 sm:p-4 mb-4 sm:mb-6"
+            >
+              <div className="flex flex-col sm:flex-row gap-3">
+                {/* Recherche */}
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Rechercher..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-8 py-2 text-sm border border-slate-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-slate-900"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 hover:bg-slate-100 rounded"
+                    >
+                      <X className="w-3.5 h-3.5 text-slate-400" />
+                    </button>
+                  )}
+                </div>
 
-          <div className="bg-white rounded-lg shadow-md p-4 border-l-4 border-gray-600">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">À faire</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.a_faire}</p>
-              </div>
-              <Circle className="w-8 h-8 text-gray-600" />
-            </div>
-          </div>
+                {/* Contrôles */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      showFilters ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    <SlidersHorizontal className="w-4 h-4" />
+                    <span className="hidden sm:inline">Filtres</span>
+                  </button>
 
-          <div className="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-600">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">En cours</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.en_cours}</p>
-              </div>
-              <Clock className="w-8 h-8 text-blue-600" />
-            </div>
-          </div>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as 'date' | 'client' | 'status')}
+                    className="px-3 py-2 text-sm border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 focus:border-blue-500"
+                  >
+                    <option value="date">Date</option>
+                    <option value="client">Client</option>
+                    <option value="status">Statut</option>
+                  </select>
 
-          <div className="bg-white rounded-lg shadow-md p-4 border-l-4 border-green-600">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Terminées</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.terminee}</p>
-              </div>
-              <CheckCircle2 className="w-8 h-8 text-green-600" />
-            </div>
-          </div>
-        </div>
-
-        {/* Barre de recherche et contrôles */}
-        <div className="bg-white rounded-xl shadow-md p-4 mb-6">
-          <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Rechercher une tâche, un client, un mandat..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-gray-900 font-medium"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 rounded"
-                >
-                  <X className="w-4 h-4 text-gray-500" />
-                </button>
-              )}
-            </div>
-
-            <div className="flex gap-2">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center gap-2 px-4 py-3 rounded-lg font-bold transition-all ${
-                  showFilters ? 'bg-brand-orange text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                <SlidersHorizontal className="w-5 h-5" />
-                <span className="hidden sm:inline">Filtres</span>
-              </button>
-
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as 'date' | 'client' | 'status')}
-                className="px-4 py-3 border-2 border-gray-300 rounded-lg font-bold text-gray-900 hover:bg-gray-50 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20"
-              >
-                <option value="date">Par date</option>
-                <option value="client">Par client</option>
-                <option value="status">Par statut</option>
-              </select>
-
-              <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded ${viewMode === 'list' ? 'bg-white shadow' : 'hover:bg-gray-200'}`}
-                  title="Vue liste"
-                >
-                  <LayoutList className="w-5 h-5 text-gray-700" />
-                </button>
-                <button
-                  onClick={() => setViewMode('kanban')}
-                  className={`p-2 rounded ${viewMode === 'kanban' ? 'bg-white shadow' : 'hover:bg-gray-200'}`}
-                  title="Vue kanban"
-                >
-                  <LayoutGrid className="w-5 h-5 text-gray-700" />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {showFilters && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t-2 border-gray-200">
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Statut
-                </label>
-                <select
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value as TaskStatus | 'all')}
-                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-gray-900 font-medium"
-                >
-                  <option value="all">Tous les statuts</option>
-                  <option value="a_faire">À faire</option>
-                  <option value="en_cours">En cours</option>
-                  <option value="terminee">Terminée</option>
-                </select>
+                  <div className="flex bg-slate-100 p-0.5 rounded-lg">
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`p-1.5 rounded transition-all ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-slate-200'}`}
+                      title="Vue liste"
+                    >
+                      <LayoutList className="w-4 h-4 text-slate-600" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('kanban')}
+                      className={`p-1.5 rounded transition-all ${viewMode === 'kanban' ? 'bg-white shadow-sm' : 'hover:bg-slate-200'}`}
+                      title="Vue kanban"
+                    >
+                      <LayoutGrid className="w-4 h-4 text-slate-600" />
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Type
-                </label>
-                <select
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value as TaskType | 'all')}
-                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-gray-900 font-medium"
-                >
-                  <option value="all">Tous les types</option>
-                  <option value="contenu">Contenu</option>
-                  <option value="video">Vidéo</option>
-                  <option value="reunion">Réunion</option>
-                  <option value="reporting">Reporting</option>
-                  <option value="autre">Autre</option>
-                </select>
-              </div>
-            </div>
-          )}
-        </div>
+              {/* Filtres expandés */}
+              <AnimatePresence>
+                {showFilters && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-slate-100">
+                      <div>
+                        <label className="block text-xs font-medium text-slate-500 mb-1.5">Statut</label>
+                        <select
+                          value={filterStatus}
+                          onChange={(e) => setFilterStatus(e.target.value as TaskStatus | 'all')}
+                          className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:border-blue-500 text-slate-700"
+                        >
+                          <option value="all">Tous</option>
+                          <option value="a_faire">À faire</option>
+                          <option value="en_cours">En cours</option>
+                          <option value="terminee">Terminée</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-500 mb-1.5">Type</label>
+                        <select
+                          value={filterType}
+                          onChange={(e) => setFilterType(e.target.value as TaskType | 'all')}
+                          className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:border-blue-500 text-slate-700"
+                        >
+                          <option value="all">Tous</option>
+                          <option value="contenu">Contenu</option>
+                          <option value="video">Vidéo</option>
+                          <option value="reunion">Réunion</option>
+                          <option value="reporting">Reporting</option>
+                          <option value="autre">Autre</option>
+                        </select>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
 
         {viewMode === 'list' ? (
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">
-                Tâches ({filteredAndSortedTasks.length})
-              </h2>
-              {searchQuery && (
-                <span className="text-sm text-gray-600">
-                  {filteredAndSortedTasks.length} résultat{filteredAndSortedTasks.length !== 1 ? 's' : ''} pour "{searchQuery}"
-                </span>
-              )}
-            </div>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="space-y-2"
+          >
+            {/* Header avec compteur */}
+            {searchQuery && (
+              <p className="text-sm text-slate-500 mb-3">
+                {filteredAndSortedTasks.length} résultat{filteredAndSortedTasks.length !== 1 ? 's' : ''} pour "<span className="font-medium text-slate-700">{searchQuery}</span>"
+              </p>
+            )}
 
             {filteredAndSortedTasks.length === 0 ? (
-              <div className="text-center py-12">
-                <ClipboardList className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 font-medium">
+              <div className="bg-white rounded-xl border border-slate-200/60 shadow-sm p-8 sm:p-12 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center">
+                  <ListTodo className="w-8 h-8 text-slate-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-800 mb-1">Aucune tâche</h3>
+                <p className="text-slate-500 text-sm">
                   {tasks.length === 0 
-                    ? "Aucune tâche créée" 
-                    : "Aucune tâche ne correspond aux critères de recherche"}
+                    ? "Créez votre première tâche pour commencer" 
+                    : "Aucune tâche ne correspond à vos critères"}
                 </p>
               </div>
             ) : (
-              <div className="space-y-3">
-                {filteredAndSortedTasks.map((task: TaskWithDetails) => {
+              <div className="space-y-2">
+                {filteredAndSortedTasks.map((task: TaskWithDetails, index: number) => {
                   const isOverdue = task.due_date && new Date(task.due_date) < new Date() && task.status !== 'terminee';
+                  const isCompleted = task.status === 'terminee';
+                  
                   return (
-                    <div
+                    <motion.div
                       key={task.id}
-                      className={`border-2 rounded-xl p-4 hover:shadow-lg transition-all cursor-pointer ${
-                        isOverdue ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-400'
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.03 }}
+                      className={`group bg-white rounded-xl border transition-all duration-200 hover:shadow-md cursor-pointer ${
+                        isOverdue ? 'border-red-200 bg-red-50/30' : 
+                        isCompleted ? 'border-emerald-200 bg-emerald-50/20' :
+                        'border-slate-200/60 hover:border-slate-300'
                       }`}
                       onClick={() => router.push(`/mandats/${task.mandat_id}`)}
                     >
-                      <div className="flex justify-between items-start mb-2">
-                        <div className="flex-1">
-                          <div className="flex items-start gap-2 mb-2">
-                            <h3 className="text-lg font-bold text-gray-900 flex-1">
-                              {task.title}
-                            </h3>
-                            {isOverdue && (
-                              <span className="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">
-                                <AlertCircle className="w-3 h-3" />
-                                En retard
-                              </span>
-                            )}
-                          </div>
-                          
-                          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600 mb-2">
-                            <Link
-                              href={`/clients/${task.client.id}`}
-                              className="flex items-center hover:text-blue-700 font-medium"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <User className="w-4 h-4 mr-1" />
-                              {task.client.name}
-                            </Link>
-                            
-                            <Link
-                              href={`/mandats/${task.mandat_id}`}
-                              className="flex items-center hover:text-blue-700 font-medium"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <Briefcase className="w-4 h-4 mr-1" />
-                              {task.mandat.title}
-                            </Link>
+                      <div className="p-3 sm:p-4">
+                        <div className="flex items-start gap-3">
+                          {/* Indicateur de statut */}
+                          <div className={`flex-shrink-0 w-2 h-2 mt-2 rounded-full ${
+                            task.status === 'terminee' ? 'bg-emerald-500' :
+                            task.status === 'en_cours' ? 'bg-amber-500' :
+                            isOverdue ? 'bg-red-500' : 'bg-slate-300'
+                          }`} />
 
-                            {task.due_date && (
-                              <div className={`flex items-center ${isOverdue ? 'text-red-700 font-bold' : ''}`}>
-                                <Calendar className="w-4 h-4 mr-1" />
-                                {new Date(task.due_date).toLocaleDateString("fr-FR")}
+                          {/* Contenu principal */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2 mb-1">
+                              <h3 className={`font-medium text-sm sm:text-base leading-tight ${
+                                isCompleted ? 'text-slate-400 line-through' : 'text-slate-900'
+                              }`}>
+                                {task.title}
+                              </h3>
+                              
+                              {/* Badges */}
+                              <div className="flex items-center gap-1.5 flex-shrink-0">
+                                {isOverdue && (
+                                  <span className="flex items-center gap-1 px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium">
+                                    <AlertCircle className="w-3 h-3" />
+                                    <span className="hidden sm:inline">Retard</span>
+                                  </span>
+                                )}
+                                <span className={`px-2 py-0.5 text-xs rounded-full font-medium ${
+                                  task.status === 'terminee' ? 'bg-emerald-100 text-emerald-700' :
+                                  task.status === 'en_cours' ? 'bg-amber-100 text-amber-700' :
+                                  'bg-slate-100 text-slate-600'
+                                }`}>
+                                  {TASK_STATUS_LABELS[task.status]}
+                                </span>
                               </div>
+                            </div>
+                            
+                            {/* Métadonnées */}
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                              <Link
+                                href={`/clients/${task.client.id}`}
+                                className="flex items-center hover:text-blue-600 transition-colors"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <User className="w-3 h-3 mr-1" />
+                                {task.client.name}
+                              </Link>
+                              
+                              <span className="flex items-center">
+                                <Briefcase className="w-3 h-3 mr-1" />
+                                {task.mandat.title}
+                              </span>
+
+                              {task.due_date && (
+                                <span className={`flex items-center ${isOverdue ? 'text-red-600 font-medium' : ''}`}>
+                                  <Calendar className="w-3 h-3 mr-1" />
+                                  {new Date(task.due_date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'short' })}
+                                </span>
+                              )}
+                              
+                              <span className="px-1.5 py-0.5 bg-slate-100 rounded text-slate-600">
+                                {TASK_TYPE_LABELS[task.type]}
+                              </span>
+                            </div>
+
+                            {/* Description (si présente) */}
+                            {task.details && (
+                              <p className="text-xs text-slate-400 mt-1.5 line-clamp-1">
+                                {task.details}
+                              </p>
                             )}
                           </div>
 
-                          {task.details && (
-                            <p className="text-sm text-gray-700 line-clamp-2">
-                              {task.details}
-                            </p>
-                          )}
-                        </div>
-
-                        <div className="flex flex-col gap-2 ml-4">
-                          <span className={`px-3 py-1 text-xs rounded-full whitespace-nowrap ${TASK_STATUS_COLORS[task.status]}`}>
-                            {TASK_STATUS_LABELS[task.status]}
-                          </span>
-                          
-                          <span className="px-3 py-1 text-xs rounded-full whitespace-nowrap bg-gray-100 text-gray-900 font-semibold border-2 border-gray-300">
-                            {TASK_TYPE_LABELS[task.type]}
-                          </span>
+                          {/* Chevron */}
+                          <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 transition-colors flex-shrink-0 mt-1" />
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
             )}
-          </div>
+          </motion.div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4"
+          >
             {/* Colonne À faire */}
-            <div className="bg-gray-50 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 bg-gray-600 rounded-full"></div>
-                <h3 className="font-bold text-gray-900">À faire</h3>
-                <span className="ml-auto bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-sm font-bold">
+            <div className="bg-slate-50/50 rounded-xl border border-slate-200/60 p-3">
+              <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-200">
+                <div className="w-2 h-2 bg-slate-400 rounded-full" />
+                <h3 className="font-semibold text-slate-700 text-sm">À faire</h3>
+                <span className="ml-auto px-1.5 py-0.5 bg-slate-200 text-slate-600 rounded text-xs font-medium">
                   {tasksByStatus.a_faire.length}
                 </span>
               </div>
-              <div className="space-y-3">
-                {tasksByStatus.a_faire.map((task: TaskWithDetails) => (
-                  <div
-                    key={task.id}
-                    className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer border-2 border-transparent hover:border-blue-400"
-                    onClick={() => router.push(`/mandats/${task.mandat_id}`)}
-                  >
-                    <h4 className="font-bold text-gray-900 mb-2 line-clamp-2">{task.title}</h4>
-                    <p className="text-xs text-gray-600 mb-2">{task.client.name}</p>
-                    {task.due_date && (
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        {new Date(task.due_date).toLocaleDateString("fr-FR")}
+              <div className="space-y-2 max-h-[500px] overflow-y-auto">
+                {tasksByStatus.a_faire.map((task: TaskWithDetails) => {
+                  const isOverdue = task.due_date && new Date(task.due_date) < new Date();
+                  return (
+                    <div
+                      key={task.id}
+                      className={`bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all cursor-pointer border ${
+                        isOverdue ? 'border-red-200' : 'border-slate-100 hover:border-slate-300'
+                      }`}
+                      onClick={() => router.push(`/mandats/${task.mandat_id}`)}
+                    >
+                      <h4 className="font-medium text-slate-900 text-sm mb-1.5 line-clamp-2">{task.title}</h4>
+                      <p className="text-xs text-slate-500 mb-2">{task.client.name}</p>
+                      <div className="flex items-center justify-between">
+                        {task.due_date && (
+                          <span className={`flex items-center text-xs ${isOverdue ? 'text-red-600' : 'text-slate-400'}`}>
+                            <Calendar className="w-3 h-3 mr-1" />
+                            {new Date(task.due_date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'short' })}
+                          </span>
+                        )}
+                        <span className="px-1.5 py-0.5 bg-slate-100 text-slate-600 text-[10px] rounded font-medium">
+                          {TASK_TYPE_LABELS[task.type]}
+                        </span>
                       </div>
-                    )}
-                    <span className="inline-block mt-2 px-2 py-1 bg-gray-100 text-gray-900 text-xs font-semibold rounded">
-                      {TASK_TYPE_LABELS[task.type]}
-                    </span>
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
                 {tasksByStatus.a_faire.length === 0 && (
-                  <p className="text-center text-gray-500 text-sm py-8">Aucune tâche</p>
+                  <div className="text-center py-6">
+                    <Circle className="w-6 h-6 text-slate-300 mx-auto mb-2" />
+                    <p className="text-slate-400 text-xs">Aucune tâche</p>
+                  </div>
                 )}
               </div>
             </div>
 
             {/* Colonne En cours */}
-            <div className="bg-blue-50 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
-                <h3 className="font-bold text-gray-900">En cours</h3>
-                <span className="ml-auto bg-blue-200 text-blue-700 px-2 py-1 rounded-full text-sm font-bold">
+            <div className="bg-amber-50/30 rounded-xl border border-amber-200/60 p-3">
+              <div className="flex items-center gap-2 mb-3 pb-2 border-b border-amber-200/60">
+                <div className="w-2 h-2 bg-amber-500 rounded-full" />
+                <h3 className="font-semibold text-amber-800 text-sm">En cours</h3>
+                <span className="ml-auto px-1.5 py-0.5 bg-amber-200 text-amber-700 rounded text-xs font-medium">
                   {tasksByStatus.en_cours.length}
                 </span>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2 max-h-[500px] overflow-y-auto">
                 {tasksByStatus.en_cours.map((task: TaskWithDetails) => (
                   <div
                     key={task.id}
-                    className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer border-2 border-transparent hover:border-blue-400"
+                    className="bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all cursor-pointer border border-amber-100 hover:border-amber-300"
                     onClick={() => router.push(`/mandats/${task.mandat_id}`)}
                   >
-                    <h4 className="font-bold text-gray-900 mb-2 line-clamp-2">{task.title}</h4>
-                    <p className="text-xs text-gray-600 mb-2">{task.client.name}</p>
-                    {task.due_date && (
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        {new Date(task.due_date).toLocaleDateString("fr-FR")}
-                      </div>
-                    )}
-                    <span className="inline-block mt-2 px-2 py-1 bg-gray-100 text-gray-900 text-xs font-semibold rounded">
-                      {TASK_TYPE_LABELS[task.type]}
-                    </span>
+                    <h4 className="font-medium text-slate-900 text-sm mb-1.5 line-clamp-2">{task.title}</h4>
+                    <p className="text-xs text-slate-500 mb-2">{task.client.name}</p>
+                    <div className="flex items-center justify-between">
+                      {task.due_date && (
+                        <span className="flex items-center text-xs text-slate-400">
+                          <Calendar className="w-3 h-3 mr-1" />
+                          {new Date(task.due_date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'short' })}
+                        </span>
+                      )}
+                      <span className="px-1.5 py-0.5 bg-slate-100 text-slate-600 text-[10px] rounded font-medium">
+                        {TASK_TYPE_LABELS[task.type]}
+                      </span>
+                    </div>
                   </div>
                 ))}
                 {tasksByStatus.en_cours.length === 0 && (
-                  <p className="text-center text-gray-500 text-sm py-8">Aucune tâche</p>
+                  <div className="text-center py-6">
+                    <Timer className="w-6 h-6 text-amber-300 mx-auto mb-2" />
+                    <p className="text-amber-400 text-xs">Aucune tâche</p>
+                  </div>
                 )}
               </div>
             </div>
 
             {/* Colonne Terminée */}
-            <div className="bg-green-50 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 bg-green-600 rounded-full"></div>
-                <h3 className="font-bold text-gray-900">Terminée</h3>
-                <span className="ml-auto bg-green-200 text-green-700 px-2 py-1 rounded-full text-sm font-bold">
+            <div className="bg-emerald-50/30 rounded-xl border border-emerald-200/60 p-3">
+              <div className="flex items-center gap-2 mb-3 pb-2 border-b border-emerald-200/60">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                <h3 className="font-semibold text-emerald-800 text-sm">Terminées</h3>
+                <span className="ml-auto px-1.5 py-0.5 bg-emerald-200 text-emerald-700 rounded text-xs font-medium">
                   {tasksByStatus.terminee.length}
                 </span>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2 max-h-[500px] overflow-y-auto">
                 {tasksByStatus.terminee.map((task: TaskWithDetails) => (
                   <div
                     key={task.id}
-                    className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer border-2 border-transparent hover:border-blue-400 opacity-75"
+                    className="bg-white/80 rounded-lg p-3 shadow-sm hover:shadow-md transition-all cursor-pointer border border-emerald-100 hover:border-emerald-300 opacity-75"
                     onClick={() => router.push(`/mandats/${task.mandat_id}`)}
                   >
-                    <h4 className="font-bold text-gray-900 mb-2 line-clamp-2">{task.title}</h4>
-                    <p className="text-xs text-gray-600 mb-2">{task.client.name}</p>
-                    {task.due_date && (
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        {new Date(task.due_date).toLocaleDateString("fr-FR")}
-                      </div>
-                    )}
-                    <span className="inline-block mt-2 px-2 py-1 bg-gray-100 text-gray-900 text-xs font-semibold rounded">
-                      {TASK_TYPE_LABELS[task.type]}
-                    </span>
+                    <h4 className="font-medium text-slate-500 text-sm mb-1.5 line-clamp-2 line-through">{task.title}</h4>
+                    <p className="text-xs text-slate-400 mb-2">{task.client.name}</p>
+                    <div className="flex items-center justify-between">
+                      {task.due_date && (
+                        <span className="flex items-center text-xs text-slate-300">
+                          <Calendar className="w-3 h-3 mr-1" />
+                          {new Date(task.due_date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'short' })}
+                        </span>
+                      )}
+                      <span className="px-1.5 py-0.5 bg-slate-100 text-slate-400 text-[10px] rounded font-medium">
+                        {TASK_TYPE_LABELS[task.type]}
+                      </span>
+                    </div>
                   </div>
                 ))}
                 {tasksByStatus.terminee.length === 0 && (
-                  <p className="text-center text-gray-500 text-sm py-8">Aucune tâche</p>
+                  <div className="text-center py-6">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-300 mx-auto mb-2" />
+                    <p className="text-emerald-400 text-xs">Aucune tâche</p>
+                  </div>
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
           </>
         )}

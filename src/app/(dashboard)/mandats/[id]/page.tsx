@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { TasksList } from "@/components/mandats/TasksList";
 import { ExpensesList } from "@/components/expenses/ExpensesList";
@@ -23,7 +24,11 @@ import {
   BarChart3,
   Activity,
   Plus,
-  Target
+  Target,
+  Briefcase,
+  ChevronRight,
+  ListTodo,
+  Receipt
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { 
@@ -141,10 +146,15 @@ export default function MandatDetailPage() {
     return (
       <>
         <Header title="Chargement..." />
-        <main className="p-4 sm:p-6 lg:p-8">
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-900 font-semibold">Chargement du mandat...</p>
+        <main className="p-3 sm:p-4 md:p-6 lg:p-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30 animate-pulse">
+                <Briefcase className="w-8 h-8 text-white" />
+              </div>
+              <Loader2 className="w-6 h-6 animate-spin text-amber-500 mx-auto mb-3" />
+              <p className="text-slate-600 font-medium">Chargement du mandat...</p>
+            </div>
           </div>
         </main>
       </>
@@ -155,14 +165,19 @@ export default function MandatDetailPage() {
     return (
       <>
         <Header title="Erreur" />
-        <main className="p-4 sm:p-6 lg:p-8">
-          <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6">
-            <p className="text-red-900 font-semibold">{error || "Mandat non trouvé"}</p>
+        <main className="p-3 sm:p-4 md:p-6 lg:p-8">
+          <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-2xl p-6 sm:p-8 text-center max-w-md mx-auto">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-red-100 flex items-center justify-center">
+              <AlertCircle className="w-7 h-7 text-red-500" />
+            </div>
+            <h3 className="text-lg font-bold text-red-800 mb-2">Mandat introuvable</h3>
+            <p className="text-red-600 text-sm mb-4">{error || "Ce mandat n'existe pas ou a été supprimé."}</p>
             <Link
               href="/mandats"
-              className="inline-block mt-4 text-red-700 hover:text-red-900 font-bold"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium text-sm"
             >
-              Retour à la liste
+              <ArrowLeft className="w-4 h-4" />
+              Retour aux mandats
             </Link>
           </div>
         </main>
@@ -177,232 +192,302 @@ export default function MandatDetailPage() {
   return (
     <>
       <Header title={mandat.title} />
-      <main className="p-4 sm:p-6 lg:p-8 max-w-[1800px] mx-auto">
-        {/* Breadcrumb & Actions */}
-        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 mb-6">
-          <Link
-            href={`/clients/${client.id}`}
-            className="flex items-center text-gray-900 hover:text-brand-orange transition-colors font-semibold"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour à {client.name}
-          </Link>
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto animate-fade-in">
+        {/* Breadcrumb */}
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2 text-sm text-slate-500 mb-4 sm:mb-6"
+        >
+          <Link href="/mandats" className="hover:text-amber-600 transition-colors">Mandats</Link>
+          <ChevronRight className="w-4 h-4" />
+          <Link href={`/clients/${client.id}`} className="hover:text-amber-600 transition-colors">{client.name}</Link>
+          <ChevronRight className="w-4 h-4" />
+          <span className="text-slate-900 font-medium truncate max-w-[200px]">{mandat.title}</span>
+        </motion.div>
 
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href={`/mandats/${mandatId}/strategies`}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all font-bold"
-            >
-              <Target className="w-4 h-4" />
-              <span>Stratégies</span>
-            </Link>
-            <Link
-              href={`/mandats/${mandatId}/edit`}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-bold"
-            >
-              <Edit className="w-4 h-4" />
-              <span>Modifier</span>
-            </Link>
-            <button
-              onClick={handleDelete}
-              disabled={isDeleting}
-              className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 font-bold"
-            >
-              {isDeleting ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Suppression...</span>
-                </>
-              ) : (
-                <>
-                  <Trash2 className="w-4 h-4" />
-                  <span>Supprimer</span>
-                </>
-              )}
-            </button>
+        {/* Hero Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="relative bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 rounded-xl sm:rounded-2xl lg:rounded-3xl p-4 sm:p-6 lg:p-8 text-white mb-4 sm:mb-6 overflow-hidden"
+        >
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
           </div>
-        </div>
-
-        {/* En-tête avec gradient */}
-        <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 rounded-2xl shadow-2xl p-6 sm:p-8 text-white mb-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="flex-1">
+          
+          <div className="relative z-10">
+            {/* Top Row: Client & Status */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
               <Link
                 href={`/clients/${client.id}`}
-                className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 hover:bg-white/30 rounded-full text-sm font-bold mb-3 transition-colors"
+                className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full text-sm font-medium transition-all w-fit"
               >
                 <User className="w-4 h-4" />
                 {client.name}
               </Link>
-              <h1 className="text-3xl sm:text-4xl font-bold mb-2">{mandat.title}</h1>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`px-3 py-1.5 rounded-full text-sm font-semibold ${MANDAT_STATUS_COLORS[mandat.status]} shadow-lg`}>
+                  {MANDAT_STATUS_LABELS[mandat.status]}
+                </span>
+                {daysRemaining !== null && (
+                  <span className={`px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur-sm ${
+                    daysRemaining <= 0 ? 'bg-red-500/80' : daysRemaining <= 7 ? 'bg-yellow-500/80' : 'bg-white/20'
+                  }`}>
+                    <Clock className="w-3.5 h-3.5 inline mr-1" />
+                    {daysRemaining > 0 ? `${daysRemaining}j restants` : 'Échéance passée'}
+                  </span>
+                )}
+              </div>
+            </div>
+            
+            {/* Title & Type */}
+            <div className="mb-4 sm:mb-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 leading-tight">{mandat.title}</h1>
               {mandat.mandat_type && (
-                <p className="text-white/90 text-lg">{mandat.mandat_type}</p>
+                <p className="text-white/80 text-base sm:text-lg flex items-center gap-2">
+                  <Briefcase className="w-4 h-4" />
+                  {mandat.mandat_type}
+                </p>
               )}
             </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <span className={`px-4 py-2 rounded-xl font-bold ${MANDAT_STATUS_COLORS[mandat.status]} shadow-lg`}>
-                {MANDAT_STATUS_LABELS[mandat.status]}
-              </span>
-              {daysRemaining !== null && (
-                <div className="bg-white/20 px-4 py-2 rounded-xl backdrop-blur-sm">
-                  <div className="text-xs text-white/80 font-medium">Échéance</div>
-                  <div className="text-lg font-bold">
-                    {daysRemaining > 0 ? `${daysRemaining}j restants` : 'Terminé'}
-                  </div>
-                </div>
-              )}
+
+            {/* Actions */}
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              <Link
+                href={`/mandats/${mandatId}/strategies`}
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white text-amber-600 rounded-lg hover:bg-white/90 transition-all font-semibold text-sm shadow-lg"
+              >
+                <Target className="w-4 h-4" />
+                <span className="hidden sm:inline">Stratégies</span>
+              </Link>
+              <Link
+                href={`/mandats/${mandatId}/edit`}
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg transition-all font-semibold text-sm"
+              >
+                <Edit className="w-4 h-4" />
+                <span className="hidden sm:inline">Modifier</span>
+              </Link>
+              <button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-red-500/80 hover:bg-red-500 rounded-lg transition-all font-semibold text-sm disabled:opacity-50"
+              >
+                {isDeleting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4" />
+                )}
+                <span className="hidden sm:inline">{isDeleting ? 'Suppression...' : 'Supprimer'}</span>
+              </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Statistiques */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-600">
-            <div className="flex items-center justify-between mb-2">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <CheckCircle2 className="w-6 h-6 text-blue-600" />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6"
+        >
+          {/* Progression des tâches */}
+          <div className="col-span-2 lg:col-span-1 bg-white rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <CheckCircle2 className="w-5 h-5 text-white" />
               </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold text-gray-900">{stats.completedTasks}</div>
-                <div className="text-xs text-gray-600 font-medium">sur {stats.totalTasks}</div>
+              <div>
+                <p className="text-xs text-slate-500 font-medium">Progression</p>
+                <p className="text-xl sm:text-2xl font-bold text-slate-900">{stats.tasksProgress}%</p>
               </div>
             </div>
-            <p className="text-sm font-bold text-gray-700">Tâches terminées</p>
-            <div className="mt-3 bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-blue-600 h-2 rounded-full transition-all"
-                style={{ width: `${stats.tasksProgress}%` }}
+            <div className="bg-slate-100 rounded-full h-2 overflow-hidden">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: `${stats.tasksProgress}%` }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1 font-medium">{stats.tasksProgress}% complété</p>
+            <p className="text-xs text-slate-500 mt-2">{stats.completedTasks} / {stats.totalTasks} tâches</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500">
-            <div className="flex items-center justify-between mb-2">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Clock className="w-6 h-6 text-orange-600" />
+          {/* Tâches en cours */}
+          <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                <Clock className="w-5 h-5 text-white" />
               </div>
-              <div className="text-3xl font-bold text-gray-900">{stats.pendingTasks}</div>
+              <div>
+                <p className="text-xs text-slate-500 font-medium">En cours</p>
+                <p className="text-xl sm:text-2xl font-bold text-slate-900">{stats.pendingTasks}</p>
+              </div>
             </div>
-            <p className="text-sm font-bold text-gray-700">Tâches en cours</p>
           </div>
 
-          {stats.overdueTasks > 0 && (
-            <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-600">
-              <div className="flex items-center justify-between mb-2">
-                <div className="p-2 bg-red-100 rounded-lg">
-                  <AlertCircle className="w-6 h-6 text-red-600" />
-                </div>
-                <div className="text-3xl font-bold text-red-600">{stats.overdueTasks}</div>
+          {/* Tâches en retard */}
+          <div className={`bg-white rounded-xl sm:rounded-2xl border shadow-sm p-4 sm:p-5 hover:shadow-md transition-shadow ${
+            stats.overdueTasks > 0 ? 'border-red-200 bg-red-50/50' : 'border-slate-200/60'
+          }`}>
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-lg ${
+                stats.overdueTasks > 0 
+                  ? 'bg-gradient-to-br from-red-500 to-rose-500 shadow-red-500/20' 
+                  : 'bg-gradient-to-br from-slate-400 to-slate-500 shadow-slate-500/20'
+              }`}>
+                <AlertCircle className="w-5 h-5 text-white" />
               </div>
-              <p className="text-sm font-bold text-gray-700">Tâches en retard</p>
-            </div>
-          )}
-
-          <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-600">
-            <div className="flex items-center justify-between mb-2">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <DollarSign className="w-6 h-6 text-green-600" />
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-gray-900">
-                  {stats.totalExpenses.toLocaleString('fr-CH')}
-                </div>
-                <div className="text-xs text-gray-600 font-medium">CHF</div>
+              <div>
+                <p className="text-xs text-slate-500 font-medium">En retard</p>
+                <p className={`text-xl sm:text-2xl font-bold ${stats.overdueTasks > 0 ? 'text-red-600' : 'text-slate-900'}`}>
+                  {stats.overdueTasks}
+                </p>
               </div>
             </div>
-            <p className="text-sm font-bold text-gray-700">Dépenses totales</p>
           </div>
-        </div>
+
+          {/* Dépenses */}
+          <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                <Receipt className="w-5 h-5 text-white" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs text-slate-500 font-medium">Dépenses</p>
+                <p className="text-lg sm:text-xl font-bold text-slate-900 truncate">
+                  {stats.totalExpenses.toLocaleString('fr-CH')} <span className="text-sm font-normal text-slate-500">CHF</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Dates et Description */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          {(mandat.start_date || mandat.end_date) && (
-            <div className="flex flex-wrap items-center gap-6 mb-6 pb-6 border-b-2 border-gray-200">
-              {mandat.start_date && (
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <Calendar className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500 font-medium">Date de début</div>
-                    <div className="text-sm font-bold text-gray-900">
-                      {new Date(mandat.start_date).toLocaleDateString("fr-FR", {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
+        {(mandat.start_date || mandat.end_date || mandat.description) && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-5 lg:p-6 mb-4 sm:mb-6"
+          >
+            {/* Dates */}
+            {(mandat.start_date || mandat.end_date) && (
+              <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${mandat.description ? 'mb-5 pb-5 border-b border-slate-100' : ''}`}>
+                {mandat.start_date && (
+                  <div className="flex items-center gap-3 p-3 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-sm">
+                      <Calendar className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-emerald-600 font-medium">Date de début</p>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {new Date(mandat.start_date).toLocaleDateString("fr-FR", {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })}
+                      </p>
                     </div>
                   </div>
-                </div>
-              )}
-              {mandat.end_date && (
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-red-100 rounded-lg">
-                    <Calendar className="w-5 h-5 text-red-600" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500 font-medium">Date de fin</div>
-                    <div className="text-sm font-bold text-gray-900">
-                      {new Date(mandat.end_date).toLocaleDateString("fr-FR", {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
+                )}
+                {mandat.end_date && (
+                  <div className="flex items-center gap-3 p-3 bg-rose-50/50 rounded-xl border border-rose-100">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center shadow-sm">
+                      <Calendar className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-rose-600 font-medium">Date de fin</p>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {new Date(mandat.end_date).toLocaleDateString("fr-FR", {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })}
+                      </p>
                     </div>
                   </div>
+                )}
+              </div>
+            )}
+
+            {/* Description */}
+            {mandat.description && (
+              <div>
+                <h3 className="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-slate-400" />
+                  Description
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">{mandat.description}</p>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* Contenu principal - 2 colonnes sur desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          {/* Tâches du mandat */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden"
+          >
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                  <ListTodo className="w-5 h-5 text-white" />
                 </div>
-              )}
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900">Tâches</h2>
+                  <p className="text-xs text-slate-500">{stats.totalTasks} tâche(s)</p>
+                </div>
+              </div>
+              <Link
+                href="#"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-xs sm:text-sm"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Ajouter</span>
+              </Link>
             </div>
-          )}
-
-          {mandat.description && (
-            <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-600" />
-                Description du mandat
-              </h3>
-              <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{mandat.description}</p>
+            <div className="p-4 sm:p-5 max-h-[400px] overflow-y-auto">
+              <TasksList mandatId={parseInt(mandatId)} />
             </div>
-          )}
-        </div>
+          </motion.div>
 
-        {/* Tâches du mandat */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              <Activity className="w-6 h-6 text-blue-600" />
-              Tâches du mandat
-            </h2>
-            <Link
-              href="#"
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-bold text-sm"
-            >
-              <Plus className="w-4 h-4" />
-              Nouvelle tâche
-            </Link>
-          </div>
-          <TasksList mandatId={parseInt(mandatId)} />
-        </div>
-
-        {/* Dépenses du mandat */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              <BarChart3 className="w-6 h-6 text-green-600" />
-              Dépenses du mandat
-            </h2>
-            <Link
-              href={`/expenses/new?mandat=${mandatId}`}
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-bold text-sm"
-            >
-              <Plus className="w-4 h-4" />
-              Nouvelle dépense
-            </Link>
-          </div>
-          <ExpensesList mandatId={parseInt(mandatId)} />
+          {/* Dépenses du mandat */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden"
+          >
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                  <Receipt className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900">Dépenses</h2>
+                  <p className="text-xs text-slate-500">{stats.totalExpenses.toLocaleString('fr-CH')} CHF</p>
+                </div>
+              </div>
+              <Link
+                href={`/depenses/new?mandat=${mandatId}`}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors font-medium text-xs sm:text-sm"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Ajouter</span>
+              </Link>
+            </div>
+            <div className="p-4 sm:p-5 max-h-[400px] overflow-y-auto">
+              <ExpensesList mandatId={parseInt(mandatId)} />
+            </div>
+          </motion.div>
         </div>
       </main>
     </>

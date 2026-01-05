@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "YourStory — Agence de storytelling vidéo",
   description:
     "YourStory crée des vidéos verticales impactantes et un storytelling authentique pour faire grandir votre marque, simplement et avec professionnalisme.",
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export default function RootLayout({

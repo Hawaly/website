@@ -1,18 +1,20 @@
 import { NextResponse } from 'next/server';
-import { getSession } from '@/lib/auth';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase-server';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 export async function GET() {
   try {
-    // Récupérer la session depuis le cookie
-    const session = await getSession();
+    const supabase = await createClient();
 
-    if (!session) {
+    // Récupérer la session Supabase Auth
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+    if (sessionError || !session) {
       return NextResponse.json({ user: null }, { status: 401 });
     }
 
     // Récupérer les infos complètes de l'utilisateur avec jointure
-    const { data: userData, error } = await supabase
+    const { data: userData, error } = await supabaseAdmin
       .from('app_user')
       .select(`
         id,
@@ -31,7 +33,7 @@ export async function GET() {
           company_name
         )
       `)
-      .eq('id', parseInt(session.userId))
+      .eq('auth_user_id', session.user.id)
       .eq('is_active', true)
       .single();
 
@@ -64,6 +66,7 @@ export async function GET() {
         role_id: role?.id,
         client_id: userData.client_id,
         client_name: client?.name || client?.company_name,
+        auth_user_id: session.user.id,
       },
     });
   } catch (error) {

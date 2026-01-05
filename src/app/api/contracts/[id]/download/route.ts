@@ -1,27 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
 import { getDownloadUrl } from '@/lib/storageHelpers';
+import { requireSession, loadContractOr403 } from '@/lib/authz';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Vérifier l'authentification
+    const session = await requireSession(request);
+    if (session instanceof NextResponse) return session;
+
     const { id: contractId } = await params;
 
-    // Récupérer les informations du contrat
-    const { data: contrat, error: contratError } = await supabase
-      .from('contrat')
-      .select('*')
-      .eq('id', contractId)
-      .single();
-
-    if (contratError || !contrat) {
-      return NextResponse.json(
-        { error: 'Contrat non trouvé' },
-        { status: 404 }
-      );
-    }
+    // Charger contrat avec vérification ownership
+    const contrat = await loadContractOr403(contractId, session);
+    if (contrat instanceof NextResponse) return contrat;
 
     // Get the download URL (signed URL for Supabase, local path for dev)
     const downloadUrl = await getDownloadUrl(contrat.file_path);

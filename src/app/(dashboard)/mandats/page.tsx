@@ -85,16 +85,16 @@ export default function MandatsPage() {
   return (
     <>
       <Header title="Mandats" subtitle="Gérez les mandats et contrats clients" />
-      <main className="p-4 sm:p-6 lg:p-8 animate-fade-in">
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8 animate-fade-in">
         {/* Action Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/20">
-              <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/20">
+              <Briefcase className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6 text-white" />
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-slate-900">
-                {mandats.length} <span className="text-sm sm:text-base font-normal text-slate-500">mandat(s)</span>
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900">
+                {mandats.length} <span className="text-xs sm:text-sm md:text-base font-normal text-slate-500">mandat(s)</span>
               </p>
               {filteredMandats.length !== mandats.length && (
                 <p className="text-xs sm:text-sm text-slate-500">{filteredMandats.length} affiché(s)</p>

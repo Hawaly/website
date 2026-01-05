@@ -15,6 +15,7 @@ import {
 import { Card } from '@/components/ui/Card';
 import { supabase } from '@/lib/supabaseClient';
 import type { SocialMediaStrategy, Invoice, Mandat } from '@/types/database';
+import { ClientKPITracker } from '@/components/clients/ClientKPITracker';
 
 interface User {
   id: number;
@@ -213,6 +214,17 @@ export function ClientPortalDashboard({ user }: ClientPortalDashboardProps) {
             <p className="text-xs text-white/80">CHF</p>
           </Card>
         </div>
+
+        {/* KPIs Section */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+              Vos KPIs
+            </h3>
+          </div>
+          <ClientKPITracker clientId={user.client_id!} isAdmin={false} isCompact={true} />
+        </Card>
 
         {/* Contenu Principal */}
         <div className="grid gap-6 lg:grid-cols-2">

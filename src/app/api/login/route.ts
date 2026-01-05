@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { supabase } from '@/lib/supabaseClient';
 import { createSession } from '@/lib/auth';
+import { logSecurityEvent, detectSuspiciousLogin, createSecurityNotification, extractDeviceInfo, getClientIp } from '@/lib/securityLogger';
 
 export async function POST(request: NextRequest) {
   try {
@@ -79,6 +80,40 @@ export async function POST(request: NextRequest) {
           role: role?.code || 'client',
           roleId: role?.id || 2,
         });
+
+        // Log security event
+        const ipAddress = getClientIp(request);
+        const userAgent = request.headers.get('user-agent') || '';
+        const deviceInfo = extractDeviceInfo(userAgent);
+
+        const logId = await logSecurityEvent({
+          userId: userData.id,
+          eventType: 'login',
+          eventStatus: 'success',
+          email: userData.email,
+          ipAddress,
+          userAgent,
+          deviceInfo,
+          metadata: {
+            role_code: role?.code,
+            client_id: userData.client_id,
+          },
+        });
+
+        // Detect suspicious activity
+        if (logId) {
+          const isSuspicious = await detectSuspiciousLogin(userData.id, ipAddress, deviceInfo);
+          if (isSuspicious) {
+            await createSecurityNotification({
+              userId: userData.id,
+              securityLogId: logId,
+              notificationType: 'new_location',
+              title: 'Connexion depuis un nouvel emplacement',
+              message: `Une connexion a été détectée depuis une nouvelle adresse IP: ${ipAddress}`,
+              severity: 'warning',
+            });
+          }
+        }
         
         return NextResponse.json({
           success: true,
@@ -133,6 +168,20 @@ export async function POST(request: NextRequest) {
     const isPasswordValid = await bcrypt.compare(password, authData.password_hash);
 
     if (!isPasswordValid) {
+      // Log failed login attempt
+      const ipAddress = getClientIp(request);
+      const userAgent = request.headers.get('user-agent') || '';
+      await logSecurityEvent({
+        userId: user.user_id,
+        eventType: 'login_failed',
+        eventStatus: 'failure',
+        email: user.email,
+        ipAddress,
+        userAgent,
+        deviceInfo: extractDeviceInfo(userAgent),
+        metadata: { reason: 'Invalid password' },
+      });
+
       return NextResponse.json(
         { error: 'Identifiants incorrects' },
         { status: 401 }
@@ -145,7 +194,42 @@ export async function POST(request: NextRequest) {
       username: user.email,
       role: user.role_code, // Ajouter le rôle dans la session
       roleId: user.role_id, // Ajouter le role_id pour vérification (1 = admin)
+      clientId: user.client_id, // Ajouter client_id pour isolation tenant
     });
+
+    // Log security event
+    const ipAddress = getClientIp(request);
+    const userAgent = request.headers.get('user-agent') || '';
+    const deviceInfo = extractDeviceInfo(userAgent);
+
+    const logId = await logSecurityEvent({
+      userId: user.user_id,
+      eventType: 'login',
+      eventStatus: 'success',
+      email: user.email,
+      ipAddress,
+      userAgent,
+      deviceInfo,
+      metadata: {
+        role_code: user.role_code,
+        client_id: user.client_id,
+      },
+    });
+
+    // Detect suspicious activity
+    if (logId) {
+      const isSuspicious = await detectSuspiciousLogin(user.user_id, ipAddress, deviceInfo);
+      if (isSuspicious) {
+        await createSecurityNotification({
+          userId: user.user_id,
+          securityLogId: logId,
+          notificationType: 'new_location',
+          title: 'Connexion depuis un nouvel emplacement',
+          message: `Une connexion a été détectée depuis une nouvelle adresse IP: ${ipAddress}`,
+          severity: 'warning',
+        });
+      }
+    }
 
     // Réponse de succès avec redirection
     return NextResponse.json({

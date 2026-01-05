@@ -14,10 +14,6 @@ export interface QrBillData {
  */
 export async function generateSwissQrBill(data: QrBillData): Promise<Buffer> {
   try {
-    // Charger swissqrbill en mode standalone (génère PDF sans PDFKit)
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { PDF } = require('swissqrbill');
-
     const { invoice, client, companySettings } = data;
 
     // Validation
@@ -133,14 +129,44 @@ export async function generateSwissQrBill(data: QrBillData): Promise<Buffer> {
       account: qrBillData.creditor.account.substring(0, 8) + '...',
     }, null, 2));
 
-    // Générer le PDF en mode standalone (sans PDFKit)
-    // La classe PDF de swissqrbill retourne directement un Buffer
-    const pdf = new PDF(qrBillData, { language: 'FR' });
-    const pdfBuffer = pdf.toBuffer();
+    // Générer le QR-bill avec swissqrbill v3
+    // Documentation: https://github.com/schoero/SwissQRBill
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { PDF } = require('swissqrbill');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { Writable } = require('stream');
     
-    console.log('✅ QR-bill généré avec succès');
+    // Créer un stream personnalisé pour accumuler les données
+    const chunks: Buffer[] = [];
+    const writableStream = new Writable({
+      write(chunk: Buffer, _encoding: string, callback: () => void) {
+        chunks.push(chunk);
+        callback();
+      }
+    });
+    
+    // Créer le PDF avec swissqrbill
+    // Le 2ème paramètre est le stream de sortie
+    // Le 3ème paramètre contient les options (language, size, etc.)
+    const pdf = new PDF(qrBillData, writableStream, { 
+      language: 'FR',
+      size: 'A4'
+    });
+    
+    // Attendre que le PDF soit complètement généré
+    const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
+      pdf.on('finish', () => {
+        console.log('✅ QR-bill généré avec succès');
+        resolve(Buffer.concat(chunks));
+      });
+      
+      pdf.on('error', (err: Error) => {
+        console.error('❌ Erreur génération QR-bill:', err);
+        reject(err);
+      });
+    });
 
-    return Buffer.from(pdfBuffer);
+    return pdfBuffer;
 
   } catch (error) {
     console.error('Erreur génération QR-bill:', error);

@@ -122,18 +122,18 @@ export default function DepensesPage() {
   return (
     <>
       <Header title="Dépenses" subtitle="Suivez vos dépenses et catégories" />
-      <main className="p-4 sm:p-6 lg:p-8 animate-fade-in">
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8 animate-fade-in">
         {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-6 sm:mb-8">
-          <div className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200/60 shadow-sm hover:shadow-lg hover:border-rose-200 transition-all duration-300 overflow-hidden">
-            <div className="absolute top-0 right-0 w-16 sm:w-20 h-16 sm:h-20 bg-gradient-to-br from-rose-500/10 to-pink-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-5 mb-4 sm:mb-6 md:mb-8">
+          <div className="group relative bg-white rounded-lg sm:rounded-xl lg:rounded-2xl p-3 sm:p-4 md:p-6 border border-slate-200/60 shadow-sm hover:shadow-lg hover:border-rose-200 transition-all duration-300 overflow-hidden">
+            <div className="absolute top-0 right-0 w-14 sm:w-16 md:w-20 h-14 sm:h-16 md:h-20 bg-gradient-to-br from-rose-500/10 to-pink-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="relative flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-xs sm:text-sm font-medium text-slate-500">Ce mois</p>
-                <p className="text-lg sm:text-2xl font-bold text-rose-600 mt-1 truncate">{formatAmount(stats.thisMonth)}</p>
+                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-slate-500">Ce mois</p>
+                <p className="text-base sm:text-lg md:text-2xl font-bold text-rose-600 mt-0.5 sm:mt-1 truncate">{formatAmount(stats.thisMonth)}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center shadow-lg shadow-rose-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
-                <TrendingDown className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-md sm:rounded-lg md:rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center shadow-lg shadow-rose-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
+                <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
               </div>
             </div>
           </div>
@@ -179,21 +179,21 @@ export default function DepensesPage() {
         </div>
 
         {/* Action Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center shadow-lg shadow-rose-500/20">
-              <Receipt className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center shadow-lg shadow-rose-500/20">
+              <Receipt className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6 text-white" />
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-slate-900">
-                {expenses.length} <span className="text-sm sm:text-base font-normal text-slate-500">dépense(s)</span>
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900">
+                {expenses.length} <span className="text-xs sm:text-sm md:text-base font-normal text-slate-500">dépense(s)</span>
               </p>
               {filteredExpenses.length !== expenses.length && (
                 <p className="text-xs sm:text-sm text-slate-500">{filteredExpenses.length} affichée(s)</p>
               )}
             </div>
           </div>
-          <Link href="/depenses/new" className="btn btn-primary px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base w-full sm:w-auto justify-center">
+          <Link href="/depenses/new" className="btn btn-primary px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 text-xs sm:text-sm md:text-base w-full sm:w-auto justify-center">
             <Plus className="w-4 h-4" />
             <span>Nouvelle dépense</span>
           </Link>

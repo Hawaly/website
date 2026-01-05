@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { generateSwissQrBill } from '@/lib/qrBillGenerator';
 import { saveQrBill } from '@/lib/storageHelpers';
 import { Client, Invoice, CompanySettings } from '@/types/database';
+import { requireSession, loadInvoiceOr403 } from '@/lib/authz';
 
 export const runtime = 'nodejs';
 
@@ -17,11 +18,19 @@ export async function GET(
   console.log('  Timestamp:', new Date(requestTimestamp).toISOString());
   
   try {
+    // Vérifier l'authentification
+    const session = await requireSession(request);
+    if (session instanceof NextResponse) return session;
+
     const { id } = await params;
     const invoiceId = id;
 
-    // Récupérer la facture avec le client
-    const { data: invoice, error: invoiceError } = await supabase
+    // Charger facture avec vérification ownership (admin ou owner)
+    const invoiceBase = await loadInvoiceOr403(invoiceId, session);
+    if (invoiceBase instanceof NextResponse) return invoiceBase;
+
+    // Récupérer la facture avec le client pour la génération QR-bill
+    const { data: invoice, error: invoiceError } = await supabaseAdmin
       .from('invoice')
       .select(`
         *,
@@ -40,7 +49,7 @@ export async function GET(
     // Récupérer les paramètres de l'agence (TOUJOURS depuis la DB, pas de cache)
     // On récupère directement depuis Supabase pour avoir les données à jour
     console.log('📥 Récupération company_settings depuis Supabase...');
-    const { data: settingsData, error: settingsError } = await supabase
+    const { data: settingsData, error: settingsError } = await supabaseAdmin
       .from('company_settings')
       .select('*')
       .limit(1)
@@ -130,7 +139,7 @@ export async function GET(
     // Mettre à jour la facture avec le nouveau chemin du QR-bill (si le champ existe)
     // On essaie de mettre à jour, mais on ignore l'erreur si le champ n'existe pas
     try {
-      await supabase
+      await supabaseAdmin
         .from('invoice')
         .update({ qr_bill_path: qrBillPath })
         .eq('id', invoiceId);

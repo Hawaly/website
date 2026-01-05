@@ -22,7 +22,17 @@ import {
   Share2,
   BarChart3,
   RefreshCw,
-  Film
+  Film,
+  Target,
+  UserPlus,
+  Kanban,
+  CheckSquare,
+  Calendar,
+  FileEdit,
+  Presentation,
+  ShieldCheck,
+  Shield,
+  Package
 } from "lucide-react";
 
 interface MenuItem {
@@ -69,6 +79,7 @@ const menuItems: MenuEntry[] = [
     children: [
       { href: "/clients", label: "Clients", icon: Users, color: "from-brand-orange to-brand-orange-light" },
       { href: "/mandats", label: "Mandats", icon: Briefcase, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/packages", label: "Packs de services", icon: Package, color: "from-brand-orange to-brand-orange-light" },
     ]
   },
   
@@ -83,6 +94,23 @@ const menuItems: MenuEntry[] = [
     ]
   },
   
+  // Groupe 4 : Sales & CRM
+  { 
+    label: "Sales", 
+    icon: Target, 
+    color: "from-brand-orange to-brand-orange-light",
+    children: [
+      { href: "/sales/prospects", label: "Prospects", icon: UserPlus, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/sales/pipeline", label: "Pipeline", icon: Kanban, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/sales/activities", label: "Activités", icon: CheckSquare, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/sales/meetings", label: "Rendez-vous", icon: Calendar, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/sales/meeting-minutes", label: "PV Réunions", icon: FileEdit, color: "from-brand-orange to-brand-orange-light" },
+      { href: "/sales/pitch-decks", label: "Pitch Decks", icon: Presentation, color: "from-brand-orange to-brand-orange-light" },
+    ]
+  },
+  
+  { href: "/users", label: "Gestion des utilisateurs", icon: ShieldCheck, color: "from-purple-600 to-purple-500" },
+  { href: "/security", label: "Sécurité & Audit", icon: Shield, color: "from-red-600 to-red-500" },
   { href: "/settings", label: "Paramètres", icon: Settings, color: "from-gray-700 to-gray-800" },
 ];
 
@@ -153,13 +181,13 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Button - improved positioning and responsiveness */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-slate-900 text-white rounded-xl shadow-lg hover:bg-slate-800 transition-colors"
+        className="lg:hidden fixed top-3 left-3 sm:top-4 sm:left-4 z-50 p-2 sm:p-2.5 bg-slate-900 text-white rounded-lg sm:rounded-xl shadow-lg hover:bg-slate-800 transition-all duration-200 active:scale-95"
         aria-label="Toggle menu"
       >
-        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
       </button>
 
       {/* Mobile Overlay */}
@@ -170,10 +198,10 @@ export function Sidebar() {
         />
       )}
 
-      {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-black via-gray-900 to-black text-white flex flex-col shadow-elegant-lg border-r border-gray-800 z-50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-      {/* Logo / Brand */}
-      <div className="p-6">
+      {/* Sidebar - responsive width */}
+      <aside className={`fixed left-0 top-0 h-screen w-full sm:w-80 md:w-72 lg:w-72 bg-gradient-to-b from-black via-gray-900 to-black text-white flex flex-col shadow-elegant-lg border-r border-gray-800 z-50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      {/* Logo / Brand - responsive padding */}
+      <div className="p-4 sm:p-5 md:p-6">
         <Link href="/dashboard" className="flex items-center gap-3 group">
           <div className="relative">
             <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-brand group-hover:shadow-brand-lg transition-all duration-300 p-1.5">
@@ -196,8 +224,8 @@ export function Sidebar() {
         </Link>
       </div>
 
-      {/* Navigation Menu */}
-      <nav className="flex-1 px-4 py-2 space-y-1.5 overflow-y-auto">
+      {/* Navigation Menu - responsive spacing */}
+      <nav className="flex-1 px-3 sm:px-4 py-2 space-y-1 sm:space-y-1.5 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         {menuItems.map((item, index) => {
           const previousItem = index > 0 ? menuItems[index - 1] : null;
           const showSeparator = index > 0 && 
@@ -219,8 +247,8 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Quick Stats */}
-      <div className="px-4 py-3">
+      {/* Quick Stats - responsive padding */}
+      <div className="px-3 sm:px-4 py-2 sm:py-3">
         <div className="bg-gradient-to-br from-brand-orange/20 to-brand-orange-light/20 rounded-xl p-4 border border-brand-orange/10 shadow-inner-glow">
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className="w-4 h-4 text-brand-orange" />
@@ -233,8 +261,8 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* User Info / Footer */}
-      <div className="p-4 border-t border-gray-800/50">
+      {/* User Info / Footer - responsive padding */}
+      <div className="p-3 sm:p-4 border-t border-gray-800/50">
         <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gray-900/50 mb-3 border border-gray-800">
           <div className="relative">
             <div className="w-10 h-10 bg-brand-gradient rounded-xl flex items-center justify-center shadow-brand">
@@ -282,7 +310,7 @@ function renderMenuItem(
       <>
         <button
           onClick={() => toggleGroup(item.label)}
-          className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 w-full ${
+          className={`group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl transition-all duration-200 w-full text-sm sm:text-base ${
             isChildActive
               ? "bg-white/10 text-white shadow-lg"
               : "text-slate-400 hover:bg-white/5 hover:text-white"
@@ -294,12 +322,12 @@ function renderMenuItem(
           )}
           
           {/* Icon container */}
-          <div className={`flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 ${
+          <div className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 ${
             isChildActive 
               ? `bg-gradient-to-br ${item.color} shadow-lg` 
               : "bg-slate-800/50 group-hover:bg-slate-700/50"
           }`}>
-            <Icon className={`w-5 h-5 ${isChildActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
+            <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isChildActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
           </div>
           
           <span className="font-medium flex-1 text-left">{item.label}</span>
@@ -323,18 +351,18 @@ function renderMenuItem(
                 <Link
                   key={child.href}
                   href={child.href}
-                  className={`group relative flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 ${
+                  className={`group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl transition-all duration-200 text-sm ${
                     isChildItemActive
                       ? "bg-white/10 text-white"
                       : "text-slate-400 hover:bg-white/5 hover:text-white"
                   }`}
                 >
-                  <div className={`flex items-center justify-center w-7 h-7 rounded-lg transition-all duration-200 ${
+                  <div className={`flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-md sm:rounded-lg transition-all duration-200 ${
                     isChildItemActive 
                       ? `bg-gradient-to-br ${child.color} shadow-lg` 
                       : "bg-slate-800/50 group-hover:bg-slate-700/50"
                   }`}>
-                    <ChildIcon className={`w-4 h-4 ${isChildItemActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
+                    <ChildIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isChildItemActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
                   </div>
                   
                   <span className="font-medium text-sm">{child.label}</span>

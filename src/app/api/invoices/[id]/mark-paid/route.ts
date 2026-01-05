@@ -1,29 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireRole } from '@/lib/authz';
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Vérifier l'authentification et rôle admin uniquement
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const { id: invoiceId } = await params;
 
-    // Vérifier que la facture existe
-    const { data: invoice, error: fetchError } = await supabase
-      .from('invoice')
-      .select('*')
-      .eq('id', invoiceId)
-      .single();
-
-    if (fetchError || !invoice) {
-      return NextResponse.json(
-        { error: 'Facture non trouvée' },
-        { status: 404 }
-      );
-    }
-
     // Mettre à jour le statut
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from('invoice')
       .update({ status: 'payee' })
       .eq('id', invoiceId);

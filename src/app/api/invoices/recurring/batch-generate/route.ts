@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getRecurringInvoices, generateRecurringInvoice } from '@/lib/invoiceReports';
+import { requireRole } from '@/lib/authz';
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérifier l'authentification et droits admin uniquement
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const recurringInvoices = await getRecurringInvoices();
     
     // Filtrer les factures qui doivent être générées

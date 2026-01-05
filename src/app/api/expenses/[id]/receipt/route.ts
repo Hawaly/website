@@ -1,23 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
 import { getReceiptDownloadUrl } from '@/lib/expenseHelpers';
+import { requireSession, loadExpenseOr403 } from '@/lib/authz';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Vérifier l'authentification
+    const session = await requireSession(request);
+    if (session instanceof NextResponse) return session;
+
     const { id: expenseId } = await params;
 
-    const { data: expense, error: expenseError } = await supabase
-      .from('expense')
-      .select('*')
-      .eq('id', expenseId)
-      .single();
+    // Charger dépense avec vérification ownership
+    const expense = await loadExpenseOr403(expenseId, session);
+    if (expense instanceof NextResponse) return expense;
 
-    if (expenseError || !expense || !expense.receipt_path) {
+    if (!expense.receipt_path) {
       return NextResponse.json(
-        { error: 'Dépense ou justificatif non trouvé' },
+        { error: 'Justificatif non trouvé pour cette dépense' },
         { status: 404 }
       );
     }

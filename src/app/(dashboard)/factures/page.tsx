@@ -104,24 +104,24 @@ export default function FacturesPage() {
   return (
     <>
       <Header title="Factures" subtitle="Gérez vos factures et suivez les paiements" />
-      <main className="p-4 sm:p-6 lg:p-8 animate-fade-in">
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8 animate-fade-in">
         {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-6 sm:mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-5 mb-4 sm:mb-6 md:mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
             whileHover={{ y: -3, scale: 1.02 }}
-            className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+            className="group relative bg-white rounded-lg sm:rounded-xl lg:rounded-2xl p-3 sm:p-4 md:p-6 border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-16 sm:w-20 h-16 sm:h-20 bg-gradient-to-br from-slate-500/10 to-slate-600/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-14 sm:w-16 md:w-20 h-14 sm:h-16 md:h-20 bg-gradient-to-br from-slate-500/10 to-slate-600/10 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="relative flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-xs sm:text-sm font-medium text-slate-500">Brouillons</p>
-                <p className="text-xl sm:text-3xl font-bold text-slate-900 mt-1">{stats.brouillon}</p>
+                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-slate-500">Brouillons</p>
+                <p className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-900 mt-0.5 sm:mt-1">{stats.brouillon}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-md sm:rounded-lg md:rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-slate-600" />
               </div>
             </div>
           </motion.div>
@@ -133,14 +133,14 @@ export default function FacturesPage() {
             whileHover={{ y: -3, scale: 1.02 }}
             className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200/60 shadow-sm hover:shadow-lg hover:border-amber-200 transition-all duration-300 overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-16 sm:w-20 h-16 sm:h-20 bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-14 sm:w-16 md:w-20 h-14 sm:h-16 md:h-20 bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="relative flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-xs sm:text-sm font-medium text-slate-500">Envoyées</p>
-                <p className="text-xl sm:text-3xl font-bold text-amber-600 mt-1">{stats.envoyee}</p>
+                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-slate-500">Envoyées</p>
+                <p className="text-lg sm:text-2xl md:text-3xl font-bold text-amber-600 mt-0.5 sm:mt-1">{stats.envoyee}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
-                <Send className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-md sm:rounded-lg md:rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
+                <Send className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
               </div>
             </div>
           </motion.div>

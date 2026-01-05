@@ -23,6 +23,8 @@ import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import type { Client, SocialMediaStrategy, Mandat, Invoice } from '@/types/database';
 import { ClientEditorialCalendar } from './ClientEditorialCalendar';
+import { ClientKPITracker } from './ClientKPITracker';
+import { AssignPackageButton } from './AssignPackageButton';
 
 interface FullClientDashboardProps {
   client: Client;
@@ -430,6 +432,13 @@ export function FullClientDashboard({ client }: FullClientDashboardProps) {
           <Card className="p-4 sm:p-6">
             <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4">Actions Rapides</h3>
             <div className="space-y-2 sm:space-y-3">
+              {/* 🚀 Nouveau: Assigner un Pack avec automation complète */}
+              <AssignPackageButton 
+                clientId={client.id} 
+                clientName={client.name}
+                onSuccess={loadDashboardData}
+              />
+
               <Link
                 href={`/clients/${client.id}/strategies/new`}
                 className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gradient-to-r from-brand-orange to-brand-orange-light text-white rounded-lg sm:rounded-xl hover:shadow-lg transition-all font-semibold text-sm sm:text-base"
@@ -441,7 +450,7 @@ export function FullClientDashboard({ client }: FullClientDashboardProps) {
               </Link>
 
               <Link
-                href={`/mandats/new?client=${client.id}`}
+                href={`/mandats/new?client_id=${client.id}`}
                 className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg sm:rounded-xl hover:shadow-lg transition-all font-semibold text-sm sm:text-base"
               >
                 <div className="p-1.5 sm:p-2 bg-white/20 rounded-lg flex-shrink-0">
@@ -524,6 +533,19 @@ export function FullClientDashboard({ client }: FullClientDashboardProps) {
           </Card>
         </div>
       </div>
+
+      {/* Suivi des KPIs */}
+      <Card className="p-4 sm:p-6">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-2 bg-green-100 rounded-lg sm:rounded-xl">
+              <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+            </div>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Suivi des KPIs</h2>
+          </div>
+        </div>
+        <ClientKPITracker clientId={client.id} isAdmin={true} isCompact={false} />
+      </Card>
 
       {/* Calendrier Éditorial */}
       <Card className="p-4 sm:p-6">

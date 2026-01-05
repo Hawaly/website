@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { verifyToken, SESSION_COOKIE_NAME } from './lib/auth';
+import { createServerClient } from '@supabase/ssr';
 
 // Routes publiques (accessibles sans authentification)
-const PUBLIC_ROUTES = ['/login', '/client-login', '/', '/hash-password', '/api/login'];
+const PUBLIC_ROUTES = ['/login', '/client-login', '/', '/hash-password'];
 
 // Routes API publiques
-const PUBLIC_API_ROUTES = ['/api/login', '/api/hash-password'];
+const PUBLIC_API_ROUTES = ['/api/login', '/api/auth/login', '/api/hash-password'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -20,58 +20,80 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Récupérer le cookie de session
-  const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME);
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
 
-  // Si pas de cookie et route protégée (client-portal), rediriger vers login
-  if (!sessionCookie?.value && pathname.startsWith('/client-portal')) {
+  // Créer client Supabase avec gestion cookies
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    }
+  );
+
+  // Récupérer la session Supabase Auth
+  const { data: { session } } = await supabase.auth.getSession();
+
+  // Routes protégées qui nécessitent authentification
+  const protectedRoutes = ['/dashboard', '/client-portal', '/sales'];
+
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+
+  // Si route protégée et pas de session, rediriger vers login
+  if (isProtectedRoute && !session) {
     const loginUrl = new URL('/login', request.url);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Si cookie présent, vérifier la validité du token
-  if (sessionCookie?.value) {
-    const session = await verifyToken(sessionCookie.value);
+  // Si session existe, récupérer les infos utilisateur pour vérifier le rôle
+  if (session) {
+    // Récupérer role_id depuis app_user (via cookie ou API)
+    // Pour l'instant, on fait une requête simple
+    const { data: userData } = await supabase
+      .from('app_user')
+      .select('role_id, client_id')
+      .eq('auth_user_id', session.user.id)
+      .single();
 
-    // Si le token est invalide et route protégée, rediriger vers login
-    if (!session && (pathname.startsWith('/client-portal') || pathname.startsWith('/dashboard'))) {
-      const loginUrl = new URL('/login', request.url);
-      // Supprimer le cookie invalide
-      const response = NextResponse.redirect(loginUrl);
-      response.cookies.delete(SESSION_COOKIE_NAME);
-      return response;
-    }
+    if (userData) {
+      const isAdmin = userData.role_id === 1;
 
-    // Si l'utilisateur est authentifié et essaie d'accéder à /login, rediriger selon son rôle
-    if (session && pathname === '/login') {
-      // Admin (role_id = 1) -> /dashboard, Client -> /client-portal
-      const redirectUrl = session.roleId === 1 
-        ? new URL('/dashboard', request.url)
-        : new URL('/client-portal', request.url);
-      return NextResponse.redirect(redirectUrl);
-    }
+      // Si user authentifié essaie d'accéder à /login, rediriger selon rôle
+      if (pathname === '/login') {
+        const redirectUrl = isAdmin 
+          ? new URL('/dashboard', request.url)
+          : new URL('/client-portal', request.url);
+        return NextResponse.redirect(redirectUrl);
+      }
 
-    // Protéger les routes dashboard (admin uniquement)
-    if (session && pathname.startsWith('/dashboard') && session.roleId !== 1) {
-      const clientPortalUrl = new URL('/client-portal', request.url);
-      return NextResponse.redirect(clientPortalUrl);
-    }
+      // Protéger /dashboard (admin seulement)
+      if (pathname.startsWith('/dashboard') && !isAdmin) {
+        const clientPortalUrl = new URL('/client-portal', request.url);
+        return NextResponse.redirect(clientPortalUrl);
+      }
 
-    // Protéger les routes client-portal (clients uniquement)
-    if (session && pathname.startsWith('/client-portal') && session.roleId === 1) {
-      const dashboardUrl = new URL('/dashboard', request.url);
-      return NextResponse.redirect(dashboardUrl);
+      // Protéger /client-portal (clients seulement)
+      if (pathname.startsWith('/client-portal') && isAdmin) {
+        const dashboardUrl = new URL('/dashboard', request.url);
+        return NextResponse.redirect(dashboardUrl);
+      }
     }
   }
 
-  // Si pas de cookie et route dashboard protégée, rediriger vers login
-  if (!sessionCookie?.value && pathname.startsWith('/dashboard')) {
-    const loginUrl = new URL('/login', request.url);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // Continuer normalement
-  return NextResponse.next();
+  return response;
 }
 
 // Configuration du matcher pour appliquer le middleware

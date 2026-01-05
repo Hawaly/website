@@ -94,9 +94,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (response.ok && data.success) {
         setUser(data.user);
         
-        // Rediriger selon le rôle
+        // Rediriger selon le rôle avec rechargement complet
+        // pour éviter race condition entre state React et navigation
         const redirectPath = data.redirect_path || '/dashboard';
-        router.push(redirectPath);
+        window.location.href = redirectPath;
         
         return { success: true };
       }

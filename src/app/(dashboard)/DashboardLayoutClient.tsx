@@ -45,8 +45,9 @@ export function DashboardLayoutClient({
       {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content Area - responsive margin */}
-      <div className="flex-1 lg:ml-72 ml-0">
+      {/* Main Content Area - responsive margin with better breakpoints */}
+      <div className="flex-1 transition-all duration-300 ease-in-out lg:ml-72 md:ml-0 ml-0">
+        <div className="lg:hidden h-16" /> {/* Spacer for mobile menu button */}
         {children}
       </div>
     </div>

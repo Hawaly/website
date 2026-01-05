@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  serverExternalPackages: ['pdfkit', 'swissqrbill'],
+  serverExternalPackages: ['pdfkit'],
   
   // Optimisation des images
   images: {
@@ -25,24 +25,29 @@ const nextConfig: NextConfig = {
       // Cela empêche Next.js de bundler ces packages et leurs fichiers .afm
       config.externals = config.externals || [];
       
-      // Externaliser pdfkit complètement (utilise require() au runtime)
+      // Externaliser pdfkit (CommonJS) et swissqrbill (ESM)
       if (typeof config.externals === 'function') {
         const originalExternals = config.externals;
         config.externals = [
           originalExternals,
           ({ request }: { request?: string }, callback: (err?: unknown, result?: string) => void) => {
-            if (request === 'pdfkit' || request === 'swissqrbill' || request?.includes('pdfkit') || request?.includes('swissqrbill')) {
+            // PDFKit: CommonJS
+            if (request === 'pdfkit' || request?.includes('pdfkit')) {
               return callback(null, `commonjs ${request}`);
             }
+            // swissqrbill: Laisser Next.js gérer l'import ESM
+            // Ne PAS forcer commonjs car c'est un module ESM pur
             callback();
           },
         ];
       } else if (Array.isArray(config.externals)) {
-        // Externaliser pdfkit et swissqrbill
+        // Externaliser pdfkit uniquement
         config.externals.push(({ request }: { request?: string }, callback: (err?: unknown, result?: string) => void) => {
-          if (request === 'pdfkit' || request === 'swissqrbill' || request?.includes('pdfkit') || request?.includes('swissqrbill')) {
+          // PDFKit: CommonJS
+          if (request === 'pdfkit' || request?.includes('pdfkit')) {
             return callback(null, `commonjs ${request}`);
           }
+          // swissqrbill: Laisser Next.js gérer l'import ESM
           callback();
         });
       }
