@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireSession } from '@/lib/authz';
 
 export async function GET(request: NextRequest) {
   try {
+    // 🔒 SÉCURITÉ: Données clients sensibles - Authentification requise
+    const session = await requireSession(request);
+    if (session instanceof NextResponse) return session;
+
     const { data: clients, error } = await supabaseAdmin
       .from('client')
       .select('id, name, company_name, status')

@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireRole } from '@/lib/authz';
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // 🔒 SÉCURITÉ CRITIQUE: Seuls les admins peuvent reset les mots de passe
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const { id } = await params;
     const userId = parseInt(id);
     const body = await request.json();

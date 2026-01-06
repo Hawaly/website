@@ -24,6 +24,7 @@ import {
 import { Invoice, Expense, ExpenseCategory } from "@/types/database";
 import {
   getPaidInvoices,
+  getForecastInvoices,
   getExpenses,
   getUnpaidInvoices,
   getRecurringExpenses,
@@ -42,8 +43,8 @@ export default function DashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
   // KPIs
-  const [monthKPIs, setMonthKPIs] = useState({ revenue: 0, expenses: 0, profit: 0, invoiceCount: 0, expenseCount: 0 });
-  const [yearKPIs, setYearKPIs] = useState({ revenue: 0, expenses: 0, profit: 0, invoiceCount: 0, expenseCount: 0 });
+  const [monthKPIs, setMonthKPIs] = useState({ revenue: 0, expenses: 0, profit: 0, forecast: 0, invoiceCount: 0, expenseCount: 0, forecastCount: 0 });
+  const [yearKPIs, setYearKPIs] = useState({ revenue: 0, expenses: 0, profit: 0, forecast: 0, invoiceCount: 0, expenseCount: 0, forecastCount: 0 });
 
   // Données pour visualisations
   const [topClients, setTopClients] = useState<{ name: string; total: number }[]>([]);
@@ -79,6 +80,8 @@ export default function DashboardPage() {
       const [
         monthInvoices,
         yearInvoices,
+        monthForecast,
+        yearForecast,
         monthExpenses,
         yearExpenses,
         unpaid,
@@ -86,6 +89,8 @@ export default function DashboardPage() {
       ] = await Promise.all([
         getPaidInvoices(monthRange.startDate, monthRange.endDate),
         getPaidInvoices(yearRange.startDate, yearRange.endDate),
+        getForecastInvoices(monthRange.startDate, monthRange.endDate),
+        getForecastInvoices(yearRange.startDate, yearRange.endDate),
         getExpenses(monthRange.startDate, monthRange.endDate),
         getExpenses(yearRange.startDate, yearRange.endDate),
         getUnpaidInvoices(),
@@ -93,8 +98,8 @@ export default function DashboardPage() {
       ]);
 
       // Calculer les KPIs
-      setMonthKPIs(calculateKPIs(monthInvoices, monthExpenses));
-      setYearKPIs(calculateKPIs(yearInvoices, yearExpenses));
+      setMonthKPIs(calculateKPIs(monthInvoices, monthExpenses, monthForecast));
+      setYearKPIs(calculateKPIs(yearInvoices, yearExpenses, yearForecast));
 
       // Top clients (sur l'année)
       const clientInvoices = yearInvoices.filter(inv => inv.client !== null) as Array<Invoice & { client: { id: number; name: string } }>;
@@ -182,7 +187,7 @@ export default function DashboardPage() {
             <div className="w-1 h-5 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full" />
             <h3 className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Ce mois</h3>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5">
             {/* Revenus */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -293,6 +298,35 @@ export default function DashboardPage() {
                   <span className="badge badge-purple text-[10px] sm:text-xs">
                     Rentabilité
                   </span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Prévisions */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className="stat-card group"
+            >
+              <div className="absolute top-0 right-0 w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="relative">
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <span className="text-xs sm:text-sm font-medium text-slate-600">Prévisions</span>
+                  <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
+                    <Clock className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 text-white" />
+                  </div>
+                </div>
+                <div className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight truncate">
+                  {formatAmount(monthKPIs.forecast)}
+                </div>
+                <div className="flex items-center gap-1 sm:gap-1.5 mt-2 sm:mt-3">
+                  <div className="badge badge-info text-[10px] sm:text-xs">
+                    <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
+                    <span className="font-semibold">{monthKPIs.forecastCount}</span>
+                  </div>
+                  <span className="text-[10px] sm:text-xs text-slate-500 hidden sm:inline">en attente</span>
                 </div>
               </div>
             </motion.div>

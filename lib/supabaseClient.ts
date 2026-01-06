@@ -10,6 +10,7 @@ import { createBrowserClient } from '@supabase/ssr';
  * 
  * 🔄 Remplace l'ancien client pour compatibilité avec RLS
  */
+
 export const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

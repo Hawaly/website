@@ -14,7 +14,8 @@ import {
   Calendar,
   Loader2,
   QrCode,
-  Edit
+  Edit,
+  Trash2
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { 
@@ -43,6 +44,7 @@ export default function InvoiceDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [isMarkingPaid, setIsMarkingPaid] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     loadInvoice();
@@ -137,6 +139,35 @@ export default function InvoiceDetailPage() {
       alert(error.message || "Erreur");
     } finally {
       setIsMarkingPaid(false);
+    }
+  }
+
+  async function handleDelete() {
+    const confirmed = confirm(
+      "⚠️ ATTENTION : Êtes-vous sûr de vouloir supprimer cette facture ?\n\nCette action est irréversible."
+    );
+    if (!confirmed) return;
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/invoices/${invoiceId}/delete`, {
+        method: "DELETE",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Erreur lors de la suppression");
+      }
+
+      alert("Facture supprimée avec succès !");
+      router.push("/factures");
+
+    } catch (err: unknown) {
+      const error = err as Error;
+      alert(error.message || "Erreur");
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -241,7 +272,7 @@ export default function InvoiceDetailPage() {
               <button
                 onClick={handleMarkAsPaid}
                 disabled={isMarkingPaid}
-                className="col-span-2 sm:col-span-1 flex items-center justify-center space-x-1 sm:space-x-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm"
+                className="flex items-center justify-center space-x-1 sm:space-x-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm"
               >
                 {isMarkingPaid ? (
                   <>
@@ -257,6 +288,25 @@ export default function InvoiceDetailPage() {
                 )}
               </button>
             )}
+
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="flex items-center justify-center space-x-1 sm:space-x-2 bg-red-600 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm"
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Suppression...</span>
+                </>
+              ) : (
+                <>
+                  <Trash2 className="w-4 h-4" />
+                  <span className="hidden sm:inline">Supprimer</span>
+                  <span className="sm:hidden">Suppr.</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
 

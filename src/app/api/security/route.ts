@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireRole } from '@/lib/authz';
 
 export async function GET(request: NextRequest) {
   try {
+    // 🔒 SÉCURITÉ: Logs sensibles - Admin uniquement
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const searchParams = request.nextUrl.searchParams;
     const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');

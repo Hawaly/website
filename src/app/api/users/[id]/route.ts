@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireRole } from '@/lib/authz';
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // 🔒 SÉCURITÉ: Vérifier que l'utilisateur est admin
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const { id } = await params;
     const userId = parseInt(id);
     const body = await request.json();
@@ -103,6 +108,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // 🔒 SÉCURITÉ: Vérifier que l'utilisateur est admin
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const { id } = await params;
     const userId = parseInt(id);
 

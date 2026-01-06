@@ -134,6 +134,7 @@ export interface Invoice {
   invoice_number: string;
   issue_date: string;
   due_date: string | null;
+  payment_date: string | null; // Date de paiement effectif (pour CA réel)
   total_ht: number;
   total_tva: number;
   total_ttc: number;

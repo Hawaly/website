@@ -2,7 +2,8 @@ import { supabase } from './supabaseClient';
 import { Invoice, Expense, ExpenseCategory } from '@/types/database';
 
 /**
- * Récupère toutes les factures payées pour une période
+ * Récupère les factures payées pour une période (CA réel)
+ * Utilise payment_date pour déterminer le mois de comptabilisation
  */
 export async function getPaidInvoices(startDate?: string, endDate?: string) {
   let query = supabase
@@ -14,7 +15,41 @@ export async function getPaidInvoices(startDate?: string, endDate?: string) {
         name
       )
     `)
-    .eq('status', 'payee');
+    .eq('status', 'payee')
+    .not('payment_date', 'is', null);
+
+  if (startDate) {
+    query = query.gte('payment_date', startDate);
+  }
+  if (endDate) {
+    query = query.lte('payment_date', endDate);
+  }
+
+  const { data, error } = await query;
+  
+  if (error) {
+    console.error('Erreur récupération factures payées:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Récupère les factures envoyées (prévisions de CA)
+ * Utilise issue_date pour déterminer le mois de prévision
+ */
+export async function getForecastInvoices(startDate?: string, endDate?: string) {
+  let query = supabase
+    .from('invoice')
+    .select(`
+      *,
+      client:client_id (
+        id,
+        name
+      )
+    `)
+    .eq('status', 'envoyee');
 
   if (startDate) {
     query = query.gte('issue_date', startDate);
@@ -26,7 +61,7 @@ export async function getPaidInvoices(startDate?: string, endDate?: string) {
   const { data, error } = await query;
   
   if (error) {
-    console.error('Erreur récupération factures:', error);
+    console.error('Erreur récupération factures prévisionnelles:', error);
     return [];
   }
 
@@ -116,18 +151,22 @@ export async function getRecurringExpenses() {
  */
 export function calculateKPIs(
   invoices: Invoice[],
-  expenses: Expense[]
+  expenses: Expense[],
+  forecastInvoices?: Invoice[]
 ) {
   const revenue = invoices.reduce((sum, inv) => sum + inv.total_ttc, 0);
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const profit = revenue - totalExpenses;
+  const forecast = forecastInvoices ? forecastInvoices.reduce((sum, inv) => sum + inv.total_ttc, 0) : 0;
 
   return {
     revenue,
     expenses: totalExpenses,
     profit,
+    forecast,
     invoiceCount: invoices.length,
     expenseCount: expenses.length,
+    forecastCount: forecastInvoices?.length || 0,
   };
 }
 

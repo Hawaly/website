@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { requireRole } from '@/lib/authz';
 
-export async function POST(
+export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -13,32 +13,37 @@ export async function POST(
 
     const { id: invoiceId } = await params;
 
-    // Mettre à jour le statut ET la date de paiement
-    const today = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
-    const { error: updateError } = await supabaseAdmin
+    // 1. Supprimer d'abord les items de la facture
+    const { error: itemsError } = await supabaseAdmin
+      .from('invoice_item')
+      .delete()
+      .eq('invoice_id', invoiceId);
+
+    if (itemsError) {
+      throw new Error(`Erreur suppression items: ${itemsError.message}`);
+    }
+
+    // 2. Supprimer la facture
+    const { error: invoiceError } = await supabaseAdmin
       .from('invoice')
-      .update({ 
-        status: 'payee',
-        payment_date: today
-      })
+      .delete()
       .eq('id', invoiceId);
 
-    if (updateError) {
-      throw new Error(`Erreur mise à jour: ${updateError.message}`);
+    if (invoiceError) {
+      throw new Error(`Erreur suppression facture: ${invoiceError.message}`);
     }
 
     return NextResponse.json({
       success: true,
-      message: 'Facture marquée comme payée',
+      message: 'Facture supprimée avec succès',
     });
 
   } catch (error: unknown) {
     const err = error as Error;
-    console.error('Erreur mark-paid:', err);
+    console.error('Erreur delete invoice:', err);
     return NextResponse.json(
-      { error: err.message || 'Erreur lors de la mise à jour' },
+      { error: err.message || 'Erreur lors de la suppression' },
       { status: 500 }
     );
   }
 }
-

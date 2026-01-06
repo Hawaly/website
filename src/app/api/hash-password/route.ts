@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { requireRole } from '@/lib/authz';
 
 export async function POST(request: NextRequest) {
   try {
+    // 🔒 SÉCURITÉ: Endpoint dangereux - Admin uniquement
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const body = await request.json();
     const { password } = body;
 

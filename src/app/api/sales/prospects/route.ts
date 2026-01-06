@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { requireSession } from "@/lib/authz";
 
 export async function GET(request: NextRequest) {
   try {
+    // 🔒 SÉCURITÉ: Données commerciales sensibles
+    const session = await requireSession(request);
+    if (session instanceof NextResponse) return session;
+
     const { data, error } = await supabaseAdmin
       .from("prospects")
       .select("*")
@@ -28,6 +33,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // 🔒 SÉCURITÉ: Création de prospects restreinte
+    const session = await requireSession(request);
+    if (session instanceof NextResponse) return session;
+
     const body = await request.json();
 
     const { data, error } = await supabaseAdmin

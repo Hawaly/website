@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireRole } from '@/lib/authz';
 
 export async function GET(request: NextRequest) {
   try {
+    // Vérifier que l'utilisateur est admin
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const { data: users, error } = await supabaseAdmin
       .from('app_user')
       .select(`
@@ -43,6 +48,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // 🔒 SÉCURITÉ: Vérifier que l'utilisateur est admin
+    const session = await requireRole(request, [1]);
+    if (session instanceof NextResponse) return session;
+
     const body = await request.json();
     const { email, password, role_id, client_id, is_active } = body;
 
