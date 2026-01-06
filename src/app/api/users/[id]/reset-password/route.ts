@@ -7,7 +7,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // 🔒 SÉCURITÉ CRITIQUE: Seuls les admins peuvent reset les mots de passe
+    // 🔒 SÉCURITÉ CRITIQUE: Seuls les admins peuvent reset les mots de passes
     const session = await requireRole(request, [1]);
     if (session instanceof NextResponse) return session;
 
